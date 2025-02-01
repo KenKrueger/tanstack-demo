@@ -1,0 +1,33 @@
+{
+  "name": "router-demo-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "vite --port=3001",
+    "build": "vite build",
+    "serve": "vite preview",
+    "start": "vite"
+  },
+  "devDependencies": {
+    "@tanstack/router-plugin": "^1.98.2",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^6.0.3"
+  },
+  "dependencies": {
+    "@radix-ui/react-icons": "^1.3.2",
+    "@tailwindcss/vite": "^4.0.1",
+    "@tanstack/react-router": "^1.98.1",
+    "@tanstack/router-devtools": "^1.98.1",
+    "lucide-react": "^0.474.0",
+    "react": "^19.0.0",
+    "react-aria-components": "^1.6.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwind-variants": "^0.3.1",
+    "tailwindcss": "^4.0.1"
+  }
+}
