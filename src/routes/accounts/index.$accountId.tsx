@@ -6,20 +6,40 @@ import {
 import { Suspense } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
+/** Skeleton to show while we are fetching table data */
+function TableSkeleton() {
+  return (
+    <div className="p-4">
+      {/* "Transactions" heading skeleton */}
+      <div className="h-6 bg-gray-200 w-1/4 rounded mb-4"></div>
+      {/* Skeleton rows */}
+      <div className="space-y-2">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="flex space-x-2 animate-pulse">
+            <div className="h-4 bg-gray-200 rounded w-1/4" />
+            <div className="h-4 bg-gray-200 rounded w-1/2" />
+            <div className="h-4 bg-gray-200 rounded w-1/6" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export const Route = createFileRoute("/accounts/index/$accountId")({
   loader: (opts) => {
     const accountId = opts.params.accountId;
     opts.context.queryClient.prefetchQuery(accountQueryOptions(accountId));
   },
+  // Shows the spinner while the route is pending (e.g. prefetching queries)
   component: HomeLoadingWrapper,
-  pendingComponent: () => <div>Loading...</div>,
 });
 
 function HomeLoadingWrapper() {
-  const accountData = useSuspenseQuery(accountsQueryOptions);
-  const { data: accounts } = accountData;
+  // Suspense for the account list. If this is still loading, we see the route’s spinner.
+  const { data: accounts } = useSuspenseQuery(accountsQueryOptions);
   const account = accounts.find(
-    (account) => account.id === Route.useParams().accountId
+    (acct) => acct.id === Route.useParams().accountId
   );
 
   return (
@@ -27,7 +47,9 @@ function HomeLoadingWrapper() {
       <h1 className="p-2 text-4xl font-semibold text-gray-600">
         {account?.displayName}
       </h1>
-      <Suspense fallback={<div className="p-4">Loading account...</div>}>
+
+      {/* Wrap RouteComponent in another Suspense with fallback = table skeleton */}
+      <Suspense fallback={<TableSkeleton />}>
         <RouteComponent />
       </Suspense>
     </div>
@@ -35,12 +57,11 @@ function HomeLoadingWrapper() {
 }
 
 function RouteComponent() {
+  // Fetch the transactions for the single account
   const params = Route.useParams();
   const { data } = useSuspenseQuery(accountQueryOptions(params.accountId));
 
-  if (!data) {
-    return null;
-  }
+  if (!data) return null;
 
   const { transactions } = data;
 
