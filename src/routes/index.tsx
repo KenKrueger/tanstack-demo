@@ -1,7 +1,10 @@
 import * as React from "react";
 import { Suspense } from "react";
 import { createFileRoute, Link, LinkProps } from "@tanstack/react-router";
-import { accountsQueryOptions } from "../lib/api/fake-api";
+import {
+  accountsQueryOptions,
+  creditScoreQueryOptions,
+} from "../lib/api/fake-api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CreditScore, CreditScoreSkeleton } from "../components/CreditScore";
 import { CreditCard } from "lucide-react";
@@ -9,6 +12,7 @@ import { CreditCard } from "lucide-react";
 export const Route = createFileRoute("/")({
   loader: (opts) => {
     opts.context.queryClient.prefetchQuery(accountsQueryOptions);
+    opts.context.queryClient.prefetchQuery(creditScoreQueryOptions);
   },
   component: HomeLoadingWrapper,
 });
