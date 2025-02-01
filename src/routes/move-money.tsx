@@ -11,7 +11,7 @@ function RouteComponent() {
 function TransfersPayments() {
   return (
     <>
-      <h1 className="self-center text-4xl font-semibold text-gray-600">
+      <h1 className="p-4 text-center self-center text-4xl font-semibold text-gray-600">
         Move Money
       </h1>
 
