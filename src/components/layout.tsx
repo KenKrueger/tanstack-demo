@@ -1,11 +1,26 @@
 import { StarFilledIcon } from "@radix-ui/react-icons";
-import { Link, LinkProps, useMatchRoute } from "@tanstack/react-router";
+import {
+  Link,
+  LinkProps,
+  useLocation,
+  useMatchRoute,
+} from "@tanstack/react-router";
 import {
   ArrowLeftRightIcon,
   GiftIcon,
   HomeIcon,
   UserRoundIcon,
 } from "lucide-react";
+
+// Maybe allow iOS bridge to control back gestures via a useeffect on location change
+const BOTTOM_NAV_PATHS = ["/", "/move-money", "/rewards", "/profile"] as const;
+
+export function useIsBottomNavPath() {
+  const location = useLocation();
+  return BOTTOM_NAV_PATHS.includes(
+    location.pathname as (typeof BOTTOM_NAV_PATHS)[number]
+  );
+}
 
 export function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,12 +47,15 @@ interface MyNavLinkProps extends LinkProps {
   label: string;
 }
 const MyNavLink = ({ to, icon: Icon, label }: MyNavLinkProps) => {
+  const location = useLocation();
   const matchRoute = useMatchRoute();
   const isActive = matchRoute({ to });
+  const isBottomNavPath = useIsBottomNavPath();
+
   return (
     <Link
       to={to}
-      replace
+      replace={isBottomNavPath}
       className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors
         select-none touch-none
         -webkit-touch-callout-none
