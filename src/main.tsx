@@ -18,6 +18,9 @@ declare module "@tanstack/react-router" {
 }
 
 const rootElement = document.getElementById("app")!;
+const root = ReactDOM.createRoot(rootElement);
+const splash = document.getElementById("splashcontainer");
+splash?.remove();
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
