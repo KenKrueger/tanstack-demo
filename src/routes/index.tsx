@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { createFileRoute, Link, LinkProps } from "@tanstack/react-router";
 import { accountsQueryOptions } from "../lib/api/fake-api";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { CreditScore, CreditScoreSkeleton } from "../components/CreditScore";
+import { CreditCard } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   loader: (opts) => {
@@ -26,7 +28,7 @@ function HomeLoadingWrapper() {
 function HomeComponent() {
   const { data: accounts } = useSuspenseQuery(accountsQueryOptions);
   return (
-    <>
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
         {accounts?.map((account) => (
           <AccountCard
@@ -44,7 +46,10 @@ function HomeComponent() {
           </AccountCard>
         ))}
       </div>
-    </>
+      <Suspense fallback={<CreditScoreSkeleton />}>
+        <CreditScore />
+      </Suspense>
+    </div>
   );
 }
 
@@ -52,7 +57,6 @@ interface AccountCardProps extends LinkProps {
   title: string;
   children: React.ReactNode;
 }
-
 function AccountCard({ title, children, ...rest }: AccountCardProps) {
   return (
     <Link {...rest}>

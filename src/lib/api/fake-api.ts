@@ -1,6 +1,41 @@
 import { QueryClient, queryOptions, useQuery } from "@tanstack/react-query";
 import { generateTransactions } from "./getFakeTransactions";
 
+interface CreditScore {
+  score: number;
+  lastUpdated: string;
+  provider: "FICO";
+  scoreRange: {
+    min: 300;
+    max: 850;
+  };
+}
+
+const mockCreditScore: CreditScore = {
+  score: 764,
+  lastUpdated: new Date().toISOString(),
+  provider: "FICO",
+  scoreRange: {
+    min: 300,
+    max: 850,
+  },
+};
+
+async function fetchCreditScore(): Promise<CreditScore> {
+  await delay(getRandomLatency());
+  return mockCreditScore;
+}
+
+export const creditScoreQueryOptions = queryOptions({
+  queryKey: ["creditScore"] as const,
+  queryFn: fetchCreditScore,
+  staleTime: 1000 * 60 * 60, // 1 hour
+});
+
+export function useCreditScore() {
+  return useQuery(creditScoreQueryOptions);
+}
+
 export interface Transaction {
   id: string;
   date: string;
@@ -106,8 +141,8 @@ const mockAccounts: Account[] = [
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const getRandomLatency = () => {
-  const min = 300; // Minimum 300ms
-  const max = 2000; // Maximum 2s
+  const min = 500; // Minimum 500ms
+  const max = 4000; // Maximum 4s
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
