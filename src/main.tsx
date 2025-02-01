@@ -5,17 +5,6 @@ import { routeTree } from "./routeTree.gen";
 import "./styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const TanStackRouterDevtools = import.meta.env.PROD
-  ? () => null // Render nothing in production
-  : React.lazy(() =>
-      // Lazy load in development
-      import("@tanstack/router-devtools").then((res) => ({
-        default: res.TanStackRouterDevtools,
-        // For Embedded Mode
-        // default: res.TanStackRouterDevtoolsPanel
-      }))
-    );
-
 const queryClient = new QueryClient();
 
 // Set up a Router instance
