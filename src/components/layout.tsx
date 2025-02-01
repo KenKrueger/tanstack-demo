@@ -37,6 +37,7 @@ const MyNavLink = ({ to, icon: Icon, label }: MyNavLinkProps) => {
   return (
     <Link
       to={to}
+      replace
       className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors
         select-none touch-none
         -webkit-touch-callout-none

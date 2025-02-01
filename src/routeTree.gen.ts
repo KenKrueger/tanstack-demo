@@ -15,6 +15,7 @@ import { Route as RewardsImport } from './routes/rewards'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as MoveMoneyImport } from './routes/move-money'
 import { Route as IndexImport } from './routes/index'
+import { Route as AccountsIndexAccountIdImport } from './routes/accounts/index.$accountId'
 
 // Create/Update Routes
 
@@ -39,6 +40,12 @@ const MoveMoneyRoute = MoveMoneyImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AccountsIndexAccountIdRoute = AccountsIndexAccountIdImport.update({
+  id: '/accounts/index/$accountId',
+  path: '/accounts/index/$accountId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RewardsImport
       parentRoute: typeof rootRoute
     }
+    '/accounts/index/$accountId': {
+      id: '/accounts/index/$accountId'
+      path: '/accounts/index/$accountId'
+      fullPath: '/accounts/index/$accountId'
+      preLoaderRoute: typeof AccountsIndexAccountIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -84,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/move-money': typeof MoveMoneyRoute
   '/profile': typeof ProfileRoute
   '/rewards': typeof RewardsRoute
+  '/accounts/index/$accountId': typeof AccountsIndexAccountIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -91,6 +106,7 @@ export interface FileRoutesByTo {
   '/move-money': typeof MoveMoneyRoute
   '/profile': typeof ProfileRoute
   '/rewards': typeof RewardsRoute
+  '/accounts/index/$accountId': typeof AccountsIndexAccountIdRoute
 }
 
 export interface FileRoutesById {
@@ -99,14 +115,31 @@ export interface FileRoutesById {
   '/move-money': typeof MoveMoneyRoute
   '/profile': typeof ProfileRoute
   '/rewards': typeof RewardsRoute
+  '/accounts/index/$accountId': typeof AccountsIndexAccountIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/move-money' | '/profile' | '/rewards'
+  fullPaths:
+    | '/'
+    | '/move-money'
+    | '/profile'
+    | '/rewards'
+    | '/accounts/index/$accountId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/move-money' | '/profile' | '/rewards'
-  id: '__root__' | '/' | '/move-money' | '/profile' | '/rewards'
+  to:
+    | '/'
+    | '/move-money'
+    | '/profile'
+    | '/rewards'
+    | '/accounts/index/$accountId'
+  id:
+    | '__root__'
+    | '/'
+    | '/move-money'
+    | '/profile'
+    | '/rewards'
+    | '/accounts/index/$accountId'
   fileRoutesById: FileRoutesById
 }
 
@@ -115,6 +148,7 @@ export interface RootRouteChildren {
   MoveMoneyRoute: typeof MoveMoneyRoute
   ProfileRoute: typeof ProfileRoute
   RewardsRoute: typeof RewardsRoute
+  AccountsIndexAccountIdRoute: typeof AccountsIndexAccountIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -122,6 +156,7 @@ const rootRouteChildren: RootRouteChildren = {
   MoveMoneyRoute: MoveMoneyRoute,
   ProfileRoute: ProfileRoute,
   RewardsRoute: RewardsRoute,
+  AccountsIndexAccountIdRoute: AccountsIndexAccountIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -137,7 +172,8 @@ export const routeTree = rootRoute
         "/",
         "/move-money",
         "/profile",
-        "/rewards"
+        "/rewards",
+        "/accounts/index/$accountId"
       ]
     },
     "/": {
@@ -151,6 +187,9 @@ export const routeTree = rootRoute
     },
     "/rewards": {
       "filePath": "rewards.tsx"
+    },
+    "/accounts/index/$accountId": {
+      "filePath": "accounts/index.$accountId.tsx"
     }
   }
 }
