@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
 .inter-123 {
   font-family: "Inter", serif;
   font-optical-sizing: auto;

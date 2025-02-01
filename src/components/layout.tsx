@@ -38,14 +38,20 @@ const MyNavLink = ({ to, icon: Icon, label }: MyNavLinkProps) => {
     <Link
       to={to}
       className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors
+        select-none touch-none
+        -webkit-touch-callout-none
         ${isActive ? "text-blue-400" : "text-gray-400 hover:text-gray-200"}`}
+      style={{
+        WebkitTouchCallout: "none",
+        WebkitUserSelect: "none",
+        userSelect: "none",
+      }}
     >
       <Icon aria-hidden size={24} />
       <span className="text-xs">{label}</span>
     </Link>
   );
 };
-
 export function RootLayout2({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid grid-cols-10 ">
