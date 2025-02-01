@@ -1,6 +1,7 @@
 import { QueryClient, queryOptions, useQuery } from "@tanstack/react-query";
+import { generateTransactions } from "./getFakeTransactions";
 
-interface Transaction {
+export interface Transaction {
   id: string;
   date: string;
   description: string;
@@ -11,7 +12,7 @@ interface Transaction {
   merchantCategory: string;
 }
 
-interface BaseAccount {
+export interface BaseAccount {
   id: string;
   displayName: string;
   accountNumber: string; // Last 4 digits only
@@ -24,21 +25,21 @@ interface BaseAccount {
   transactions: Transaction[];
 }
 
-interface CheckingAccount extends BaseAccount {
+export interface CheckingAccount extends BaseAccount {
   type: "CHECKING";
   overdraftProtection: boolean;
   monthlyFee: number;
   minimumBalance: number;
 }
 
-interface SavingsAccount extends BaseAccount {
+export interface SavingsAccount extends BaseAccount {
   type: "SAVINGS";
   apy: number;
   interestYtd: number;
   nextInterestPayment: string;
 }
 
-interface CreditAccount extends BaseAccount {
+export interface CreditAccount extends BaseAccount {
   type: "CREDIT";
   creditLimit: number;
   availableCredit: number;
@@ -64,18 +65,7 @@ const mockAccounts: Account[] = [
     overdraftProtection: true,
     monthlyFee: 0,
     minimumBalance: 500,
-    transactions: [
-      {
-        id: "tx_1",
-        date: "2024-03-15T10:30:00Z",
-        description: "Whole Foods Market",
-        amount: -84.32,
-        category: "Groceries",
-        status: "posted",
-        merchantName: "Whole Foods",
-        merchantCategory: "GROCERY_STORES",
-      },
-    ],
+    transactions: generateTransactions("CHECKING"),
   },
   {
     id: "sav_5678",
@@ -90,7 +80,7 @@ const mockAccounts: Account[] = [
     apy: 4.25,
     interestYtd: 234.12,
     nextInterestPayment: "2024-04-01T00:00:00Z",
-    transactions: [],
+    transactions: generateTransactions("SAVINGS"),
   },
   {
     id: "cc_9012",
@@ -108,7 +98,7 @@ const mockAccounts: Account[] = [
     dueDate: "2024-04-15T00:00:00Z",
     minimumPayment: 35,
     rewardsBalance: 12450,
-    transactions: [],
+    transactions: generateTransactions("CREDIT"),
   },
 ];
 
@@ -127,11 +117,13 @@ export async function fetchAccounts(): Promise<Account[]> {
   return mockAccounts;
 }
 
-export async function fetchAccountById(
-  id: string
-): Promise<Account | undefined> {
+export async function fetchAccountById(id: string): Promise<Account> {
   await delay(getRandomLatency());
-  return mockAccounts.find((account) => account.id === id);
+  const account = mockAccounts.find((account) => account.id === id);
+  if (!account) {
+    throw new Error("Account not found");
+  }
+  return account;
 }
 
 // TanStack Query Hooks
