@@ -16,7 +16,7 @@ function HomeLoadingWrapper() {
     <div className="p-2">
       <h1>Welcome Home!</h1>
       <h2 className="p-2 text-4xl font-semibold text-gray-600">Accounts</h2>
-      <Suspense fallback={<div className="p-4">Loading accounts...</div>}>
+      <Suspense fallback={<AccountsSkeleton />}>
         <HomeComponent />
       </Suspense>
     </div>
@@ -47,6 +47,7 @@ function HomeComponent() {
     </>
   );
 }
+
 interface AccountCardProps extends LinkProps {
   title: string;
   children: React.ReactNode;
@@ -56,9 +57,28 @@ function AccountCard({ title, children, ...rest }: AccountCardProps) {
   return (
     <Link {...rest}>
       <div className="flex flex-col border border-gray-300 rounded-lg p-4">
-        <div className="font-semibold txt-xl">{title}</div>
+        <div className="font-semibold text-xl">{title}</div>
         <div>{children}</div>
       </div>
     </Link>
+  );
+}
+
+/** Skeleton for loading state */
+function AccountsSkeleton() {
+  // You could dynamically calculate how many skeleton cards
+  // to show, but here we’ll just hardcode a few placeholders.
+  return (
+    <div className="flex flex-col gap-2">
+      {Array.from({ length: 5 }, (_, i) => (
+        <div
+          key={i}
+          className="flex flex-col border border-gray-300 rounded-lg p-4 animate-pulse"
+        >
+          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
+          <div className="h-3 bg-gray-200 rounded w-3/4" />
+        </div>
+      ))}
+    </div>
   );
 }
