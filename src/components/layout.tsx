@@ -1,17 +1,21 @@
 import { StarFilledIcon } from "@radix-ui/react-icons";
 import {
+  useRouter,
+  useCanGoBack,
   Link,
   LinkProps,
   useLocation,
   useMatchRoute,
 } from "@tanstack/react-router";
 import {
+  ArrowLeftIcon,
   ArrowLeftRightIcon,
   GiftIcon,
   HomeIcon,
   UserRoundIcon,
 } from "lucide-react";
 import { WrappedLink } from "./wrapped-link";
+import { Button } from "./ui/Button";
 
 // Maybe allow iOS bridge to control back gestures via a useeffect on location change
 const BOTTOM_NAV_PATHS = ["/", "/move-money", "/rewards", "/profile"] as const;
@@ -24,8 +28,20 @@ export function useIsBottomNavPath() {
 }
 
 export function RootLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const canGoBack = useCanGoBack();
+  const isBottomNavPath = useIsBottomNavPath();
+  const showBackButton = canGoBack && !isBottomNavPath;
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 bg-[#F5F5F5]/95">
+      {showBackButton ? (
+        <Button
+          onPress={() => router.history.back()}
+          className={"bg-transparent text-black"}
+        >
+          <ArrowLeftIcon aria-hidden /> <span className="sr-only">Back</span>
+        </Button>
+      ) : null}
       <main>{children}</main>
       <div className="fixed bottom-0 left-0 right-0 z-50 ">
         <nav className="flex justify-around bg-[#F5F5F5]/95 backdrop-blur-lg p-1 border-t border-gray-800 pb-[env(safe-area-inset-bottom)]">

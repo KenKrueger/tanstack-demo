@@ -7,6 +7,7 @@ import {
 } from "../lib/api/fake-api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CreditScore, CreditScoreSkeleton } from "../components/credit-score";
+import { Card } from "../components/card";
 
 export const Route = createFileRoute("/")({
   loader: (opts) => {
@@ -19,7 +20,6 @@ export const Route = createFileRoute("/")({
 function HomeLoadingWrapper() {
   return (
     <div className="p-2">
-      <h1>Welcome Home!</h1>
       <h2 className="p-2 text-4xl font-semibold text-gray-600">Accounts</h2>
       <Suspense fallback={<AccountsSkeleton />}>
         <HomeComponent />
@@ -63,10 +63,10 @@ interface AccountCardProps extends LinkProps {
 function AccountCard({ title, children, ...rest }: AccountCardProps) {
   return (
     <Link {...rest}>
-      <div className="flex flex-col border border-gray-300 rounded-lg p-4">
+      <Card>
         <div className="font-semibold text-xl">{title}</div>
         <div>{children}</div>
-      </div>
+      </Card>
     </Link>
   );
 }

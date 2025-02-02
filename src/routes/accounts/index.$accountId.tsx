@@ -5,6 +5,7 @@ import {
 } from "../../lib/api/fake-api";
 import { Suspense } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Card } from "../../components/card";
 
 /** Skeleton to show while we are fetching table data */
 function TableSkeleton() {
@@ -43,15 +44,16 @@ function HomeLoadingWrapper() {
   );
 
   return (
-    <div className="p-2">
+    <div className="flex  flex-col gap-4 p-2">
       <h1 className="p-2 text-4xl font-semibold text-gray-600">
         {account?.displayName}
       </h1>
-      <div className="text-xl">
-        Available Balance: ${account?.availableBalance}
-      </div>
-      <div className="text-xl">Current Balance: ${account?.balance}</div>
-
+      <Card>
+        <div className="text-xl">
+          Available Balance: ${account?.availableBalance}
+        </div>
+        <div className="text-xl">Current Balance: ${account?.balance}</div>
+      </Card>
       <Suspense fallback={<TableSkeleton />}>
         <RouteComponent />
       </Suspense>
@@ -69,8 +71,8 @@ function RouteComponent() {
   const { transactions } = data;
 
   return (
-    <div>
-      <h3 className="mt-4 text-lg font-medium">Transaction History:</h3>
+    <Card>
+      <h3 className="text-lg font-medium">Transaction History:</h3>
       <div className="mt-3 overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
@@ -107,6 +109,6 @@ function RouteComponent() {
           </tbody>
         </table>
       </div>
-    </div>
+    </Card>
   );
 }
