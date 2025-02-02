@@ -20,7 +20,7 @@ import { Button } from "./ui/Button";
 // Maybe allow iOS bridge to control back gestures via a useeffect on location change
 const BOTTOM_NAV_PATHS = ["/", "/move-money", "/rewards", "/profile"] as const;
 
-export function useIsBottomNavPath() {
+function useIsBottomNavPath() {
   const location = useLocation();
   return BOTTOM_NAV_PATHS.includes(
     location.pathname as (typeof BOTTOM_NAV_PATHS)[number]
@@ -33,7 +33,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
   const isBottomNavPath = useIsBottomNavPath();
   const showBackButton = canGoBack && !isBottomNavPath;
   return (
-    <div className="min-h-screen pb-20 bg-[#F5F5F5]/95">
+    <div className="min-h-screen pb-20 ">
       {showBackButton ? (
         <Button
           onPress={() => router.history.back()}
