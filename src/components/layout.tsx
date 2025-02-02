@@ -45,7 +45,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
       ) : null}
       <main>{children}</main>
       <div className="fixed bottom-0 left-0 right-0 z-50 ">
-        <nav className="flex justify-around bg-[#F5F5F5]/95 backdrop-blur-lg p-1 border-t border-gray-800 ">
+        <nav className="flex justify-around bg-[#F5F5F5]/95 backdrop-blur-lg px-1 pt-1  border-t border-gray-800 pb-[env(safe-area-inset-bottom)]">
           <MyNavLink to="/" icon={HomeIcon} label="Home" />
           <MyNavLink
             to="/move-money"
