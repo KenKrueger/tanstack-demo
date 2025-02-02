@@ -39,7 +39,8 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
           onPress={() => router.history.back()}
           className={"bg-transparent text-black"}
         >
-          <ArrowLeftIcon aria-hidden /> <span className="sr-only">Back</span>
+          <ArrowLeftIcon className="h-6 w-6" aria-hidden />{" "}
+          <span className="sr-only">Back</span>
         </Button>
       ) : null}
       <main>{children}</main>
