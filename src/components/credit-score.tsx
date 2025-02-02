@@ -44,18 +44,20 @@ export function CreditScore() {
 
 export function CreditScoreSkeleton() {
   return (
-    <div className="flex flex-col items-center p-4 border border-gray-200 rounded-lg bg-white shadow-sm animate-pulse">
-      <div className="h-3 w-20 bg-gray-200 rounded mb-1"></div>
-      <div className="relative flex items-center justify-center w-24 h-24">
-        <div className="absolute inset-0 bg-gray-200 rounded-full"></div>
-        <div className="h-6 w-14 bg-gray-300 rounded"></div>
+    <Card>
+      <div className="flex flex-col items-center p-4 border border-gray-200 rounded-lg bg-white shadow-sm animate-pulse">
+        <div className="h-3 w-20 bg-gray-200 rounded mb-1"></div>
+        <div className="relative flex items-center justify-center w-24 h-24">
+          <div className="absolute inset-0 bg-gray-200 rounded-full"></div>
+          <div className="h-6 w-14 bg-gray-300 rounded"></div>
+        </div>
+        <div className="h-3 w-14 bg-gray-200 rounded mt-1"></div>
+        <div className="w-full flex justify-between mt-2">
+          <div className="h-2 w-6 bg-gray-200 rounded"></div>
+          <div className="h-2 w-6 bg-gray-200 rounded"></div>
+        </div>
+        <div className="h-2 w-20 bg-gray-200 rounded mt-1"></div>
       </div>
-      <div className="h-3 w-14 bg-gray-200 rounded mt-1"></div>
-      <div className="w-full flex justify-between mt-2">
-        <div className="h-2 w-6 bg-gray-200 rounded"></div>
-        <div className="h-2 w-6 bg-gray-200 rounded"></div>
-      </div>
-      <div className="h-2 w-20 bg-gray-200 rounded mt-1"></div>
-    </div>
+    </Card>
   );
 }

@@ -45,7 +45,7 @@ function HomeLoadingWrapper() {
 
   return (
     <div className="flex  flex-col gap-4 p-2">
-      <h1 className="p-2 text-4xl font-semibold text-gray-600">
+      <h1 className="p-2 text-4xl font-semibold text-zinc-800">
         {account?.displayName}
       </h1>
       <Card>

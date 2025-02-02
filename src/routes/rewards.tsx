@@ -7,8 +7,10 @@ export const Route = createFileRoute("/rewards")({
 
 function Rewards() {
   return (
-    <div className="p-2">
-      <h3>Rewards</h3>
-    </div>
+    <>
+      <div className="p-2">
+        <h2 className="p-2 text-4xl font-semibold text-zinc-800">Rewards</h2>
+      </div>
+    </>
   );
 }
