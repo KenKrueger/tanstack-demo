@@ -4,8 +4,10 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import "./styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary";
+import { CriticalErrorFallback } from "./critical-error-fallback";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 // Set up a Router instance
 const router = createRouter({
@@ -37,14 +39,16 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
 
   root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <ErrorBoundary FallbackComponent={CriticalErrorFallback}>
+      <QueryClientProvider client={null!}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 
 /** Spinner to show while route is pending */
-function Spinner() {
+export function Spinner() {
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />

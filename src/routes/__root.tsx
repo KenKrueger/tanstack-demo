@@ -2,11 +2,13 @@ import * as React from "react";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { RootLayout } from "../components/layout";
 import { QueryClient } from "@tanstack/react-query";
+import { Spinner } from "../main";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
   component: RootComponent,
+  wrapInSuspense: true,
 });
 
 const TanStackRouterDevtools = import.meta.env.PROD
@@ -24,9 +26,11 @@ function RootComponent() {
   return (
     <>
       <RootLayout>
-        <Outlet />
+        <React.Suspense fallback={<Spinner />}>
+          <Outlet />
+        </React.Suspense>
       </RootLayout>
-      <React.Suspense>
+      <React.Suspense fallback={<Spinner />}>
         <TanStackRouterDevtools position="top-right" />
       </React.Suspense>
     </>
