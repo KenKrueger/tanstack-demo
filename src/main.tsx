@@ -21,7 +21,7 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
   scrollRestoration: true,
   defaultPendingComponent: Spinner,
-  defaultViewTransition: true,
+  defaultViewTransition: false,
 });
 
 // Register things for typesafety
