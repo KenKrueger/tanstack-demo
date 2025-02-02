@@ -6,8 +6,7 @@ import {
   creditScoreQueryOptions,
 } from "../lib/api/fake-api";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { CreditScore, CreditScoreSkeleton } from "../components/CreditScore";
-import { CreditCard } from "lucide-react";
+import { CreditScore, CreditScoreSkeleton } from "../components/credit-score";
 
 export const Route = createFileRoute("/")({
   loader: (opts) => {

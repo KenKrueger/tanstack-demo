@@ -31,7 +31,6 @@ declare module "@tanstack/react-router" {
 }
 
 const rootElement = document.getElementById("app")!;
-const root = ReactDOM.createRoot(rootElement);
 const splash = document.getElementById("splashcontainer");
 splash?.remove();
 
@@ -40,7 +39,7 @@ if (!rootElement.innerHTML) {
 
   root.render(
     <ErrorBoundary FallbackComponent={CriticalErrorFallback}>
-      <QueryClientProvider client={null!}>
+      <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
     </ErrorBoundary>
