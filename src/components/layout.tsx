@@ -56,6 +56,7 @@ const MyNavLink = ({ to, icon: Icon, label }: MyNavLinkProps) => {
     <Link
       to={to}
       preload="render"
+      preloadDelay={500}
       replace={isBottomNavPath}
       className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors
         select-none touch-none

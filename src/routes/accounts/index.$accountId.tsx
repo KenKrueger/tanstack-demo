@@ -47,8 +47,11 @@ function HomeLoadingWrapper() {
       <h1 className="p-2 text-4xl font-semibold text-gray-600">
         {account?.displayName}
       </h1>
+      <div className="text-xl">
+        Available Balance: ${account?.availableBalance}
+      </div>
+      <div className="text-xl">Current Balance: ${account?.balance}</div>
 
-      {/* Wrap RouteComponent in another Suspense with fallback = table skeleton */}
       <Suspense fallback={<TableSkeleton />}>
         <RouteComponent />
       </Suspense>
@@ -67,7 +70,7 @@ function RouteComponent() {
 
   return (
     <div>
-      <h2 className="mt-4 text-lg font-medium">Transaction History:</h2>
+      <h3 className="mt-4 text-lg font-medium">Transaction History:</h3>
       <div className="mt-3 overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
