@@ -141,8 +141,8 @@ const mockAccounts: Account[] = [
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const getRandomLatency = () => {
-  const min = 500; // Minimum 500ms
-  const max = 4000; // Maximum 4s
+  const min = 300; // Minimum 300ms
+  const max = 2000; // Maximum 2s
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
