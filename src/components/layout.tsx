@@ -11,6 +11,7 @@ import {
   HomeIcon,
   UserRoundIcon,
 } from "lucide-react";
+import { WrappedLink } from "./wrapped-link";
 
 // Maybe allow iOS bridge to control back gestures via a useeffect on location change
 const BOTTOM_NAV_PATHS = ["/", "/move-money", "/rewards", "/profile"] as const;
@@ -53,7 +54,7 @@ const MyNavLink = ({ to, icon: Icon, label }: MyNavLinkProps) => {
   const isBottomNavPath = useIsBottomNavPath();
 
   return (
-    <Link
+    <WrappedLink
       to={to}
       preload="render"
       preloadDelay={500}
@@ -70,7 +71,7 @@ const MyNavLink = ({ to, icon: Icon, label }: MyNavLinkProps) => {
     >
       <Icon aria-hidden size={24} />
       <span className="text-xs">{label}</span>
-    </Link>
+    </WrappedLink>
   );
 };
 export function RootLayout2({ children }: { children: React.ReactNode }) {
