@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
 function HomeLoadingWrapper() {
   return (
     <div className="p-2">
-      <h2 className="p-2 text-4xl font-semibold text-zinc-800">Accounts</h2>
+      <h1 className="p-2 text-4xl font-semibold text-zinc-800">Accounts</h1>
       <Suspense fallback={<AccountsSkeleton />}>
         <HomeComponent />
       </Suspense>
