@@ -27,7 +27,7 @@ function TransfersPayments() {
           <MenuItem
             href="#"
             title="Make a Payment"
-            subtitle="Pay your UWCU Loans."
+            subtitle="Pay your Loans."
           />
           <MenuItem
             href="#"
@@ -36,14 +36,14 @@ function TransfersPayments() {
           />
           <MenuItem
             href="#"
-            title="Web Pay"
+            title="Bill Pay"
             subtitle="Pay bills online or send a check."
           ></MenuItem>
 
           <MenuItem
             href="#"
-            title="Money Link"
-            subtitle="Send money to UWCU Members."
+            title="Banana Link"
+            subtitle="Send money to Members."
           />
           <MenuItem
             href="#"
