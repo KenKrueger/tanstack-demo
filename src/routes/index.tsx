@@ -64,7 +64,7 @@ interface AccountCardProps extends LinkProps {
 function AccountCard({ title, children, to, params }: AccountCardProps) {
   return (
     <WrappedLink to={to} params={params}>
-      <Card>
+      <Card className="hover:bg-gray-100">
         <div className="font-semibold text-xl">{title}</div>
         <div>{children}</div>
       </Card>
