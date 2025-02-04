@@ -8,6 +8,7 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CreditScore, CreditScoreSkeleton } from "../components/credit-score";
 import { Card } from "../components/card";
+import { WrappedLink } from "../components/wrapped-link";
 
 export const Route = createFileRoute("/")({
   loader: (opts) => {
@@ -60,14 +61,14 @@ interface AccountCardProps extends LinkProps {
   title: string;
   children: React.ReactNode;
 }
-function AccountCard({ title, children, ...rest }: AccountCardProps) {
+function AccountCard({ title, children, to, params }: AccountCardProps) {
   return (
-    <Link {...rest}>
+    <WrappedLink to={to} params={params}>
       <Card>
         <div className="font-semibold text-xl">{title}</div>
         <div>{children}</div>
       </Card>
-    </Link>
+    </WrappedLink>
   );
 }
 
