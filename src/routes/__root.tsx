@@ -4,6 +4,7 @@ import {
   createRootRouteWithContext,
   useMatches,
 } from "@tanstack/react-router";
+import { RootLayout } from "../components/layout";
 import { QueryClient } from "@tanstack/react-query";
 import { Spinner } from "../main";
 
@@ -45,11 +46,13 @@ const TanStackRouterDevtools = import.meta.env.PROD
 function RootComponent() {
   return (
     <>
-      <React.Suspense fallback={<Spinner />}>
-        <Meta_RemoveWhenOfficiallyAdded>
-          <Outlet />
-        </Meta_RemoveWhenOfficiallyAdded>
-      </React.Suspense>
+      <RootLayout>
+        <React.Suspense fallback={<Spinner />}>
+          <Meta_RemoveWhenOfficiallyAdded>
+            <Outlet />
+          </Meta_RemoveWhenOfficiallyAdded>
+        </React.Suspense>
+      </RootLayout>
       <React.Suspense fallback={<Spinner />}>
         <TanStackRouterDevtools position="top-right" />
       </React.Suspense>
