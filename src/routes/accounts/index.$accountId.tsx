@@ -6,6 +6,7 @@ import {
 import { Suspense } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card } from "../../components/card";
+import { DateFormatter } from "../../components/DateFormatter";
 
 /** Skeleton to show while we are fetching table data */
 function TableSkeleton() {
@@ -99,7 +100,7 @@ function RouteComponent() {
             {transactions.map((t) => (
               <tr key={t.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2 border-b border-gray-200">
-                  {new Date(t.date).toLocaleString()}
+                  <DateFormatter date={t.date} />
                 </td>
                 <td className="px-4 py-2 border-b border-gray-200">
                   {t.description}
