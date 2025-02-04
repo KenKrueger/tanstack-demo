@@ -37,7 +37,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
       {showBackButton ? (
         <Button
           onPress={() => router.history.back()}
-          className={"text-black p-2 "}
+          className={"text-black p-2 focus:outline-0 focus-visible:outline-0 "}
         >
           <ArrowLeftIcon className="h-7 w-7" aria-hidden />
           <span className="sr-only">Back</span>
