@@ -33,7 +33,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
   const isBottomNavPath = useIsBottomNavPath();
   const showBackButton = canGoBack && !isBottomNavPath;
   return (
-    <div className="min-h-screen pb-20 ">
+    <div className="min-h-screen">
       {showBackButton ? (
         <Button
           onPress={() => router.history.back()}

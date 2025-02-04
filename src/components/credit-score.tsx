@@ -18,7 +18,9 @@ export function CreditScore() {
   return (
     <Card>
       <div className="flex flex-col items-center">
-        <div className="text-gray-600 text-sm mb-1">FICO® Score</div>
+        <div className="text-gray-600 text-sm mb-1 min-h-[16px]">
+          FICO® Score
+        </div>
         <div className="relative flex items-center justify-center w-24 h-24">
           <div
             className={`absolute inset-0 bg-${color}-100 rounded-full animate-pulse opacity-20`}
@@ -27,14 +29,16 @@ export function CreditScore() {
             {creditScore.score}
           </div>
         </div>
-        <div className={`mt-1 text-xs text-${color}-600 font-medium`}>
+        <div
+          className={`mt-1 text-xs text-${color}-600 font-medium min-h-[14px]`}
+        >
           {label}
         </div>
         <div className="w-full flex justify-between text-xs text-gray-400 mt-2">
           <span>{creditScore.scoreRange.min}</span>
           <span>{creditScore.scoreRange.max}</span>
         </div>
-        <div className="text-[10px] text-gray-400 mt-1">
+        <div className="text-[10px] text-gray-400 mt-1 min-h-[12px]">
           Updated {new Date(creditScore.lastUpdated).toLocaleDateString()}
         </div>
       </div>
@@ -45,18 +49,27 @@ export function CreditScore() {
 export function CreditScoreSkeleton() {
   return (
     <Card>
-      <div className="flex flex-col items-center p-4 border border-gray-200 rounded-lg bg-white shadow-sm animate-pulse">
-        <div className="h-3 w-20 bg-gray-200 rounded mb-1"></div>
+      <div className="flex flex-col items-center bg-white animate-pulse">
+        {/* FICO Score - text-sm (14px * 1.5 = 21px) */}
+        <div className="h-[21px] w-20 bg-gray-200 rounded mb-1"></div>
+
+        {/* Main score circle */}
         <div className="relative flex items-center justify-center w-24 h-24">
-          <div className="absolute inset-0 bg-gray-200 rounded-full"></div>
-          <div className="h-6 w-14 bg-gray-300 rounded"></div>
+          <div className="absolute inset-0 bg-gray-200 rounded-full opacity-20"></div>
+          <div className="h-[45px] w-16 bg-gray-200 rounded"></div>
         </div>
-        <div className="h-3 w-14 bg-gray-200 rounded mt-1"></div>
+
+        {/* Label - text-xs (12px * 1.5 = 18px) */}
+        <div className="mt-1 h-[18px] w-16 bg-gray-200 rounded"></div>
+
+        {/* Range numbers - text-xs (12px * 1.5 = 18px) */}
         <div className="w-full flex justify-between mt-2">
-          <div className="h-2 w-6 bg-gray-200 rounded"></div>
-          <div className="h-2 w-6 bg-gray-200 rounded"></div>
+          <span className="h-[18px] w-8 bg-gray-200 rounded"></span>
+          <span className="h-[18px] w-8 bg-gray-200 rounded"></span>
         </div>
-        <div className="h-2 w-20 bg-gray-200 rounded mt-1"></div>
+
+        {/* Update text - text-[10px] (10px * 1.5 = 15px) */}
+        <div className="h-[15px] w-24 bg-gray-200 rounded mt-1"></div>
       </div>
     </Card>
   );
