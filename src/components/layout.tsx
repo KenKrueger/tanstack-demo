@@ -15,7 +15,7 @@ import {
   UserRoundIcon,
 } from "lucide-react";
 import { WrappedLink } from "./wrapped-link";
-import { Button } from "./ui/Button";
+import { Button } from "react-aria-components";
 
 // Maybe allow iOS bridge to control back gestures via a useeffect on location change
 const BOTTOM_NAV_PATHS = ["/", "/move-money", "/rewards", "/profile"] as const;
@@ -37,9 +37,9 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
       {showBackButton ? (
         <Button
           onPress={() => router.history.back()}
-          className={"bg-transparent text-black"}
+          className={"text-black p-2 "}
         >
-          <ArrowLeftIcon className="h-6 w-6" aria-hidden />
+          <ArrowLeftIcon className="h-7 w-7" aria-hidden />
           <span className="sr-only">Back</span>
         </Button>
       ) : null}
