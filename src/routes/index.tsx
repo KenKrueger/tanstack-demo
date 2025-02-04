@@ -16,6 +16,13 @@ export const Route = createFileRoute("/")({
     opts.context.queryClient.prefetchQuery(creditScoreQueryOptions);
   },
   component: HomeLoadingWrapper,
+  head: () => ({
+    meta: [
+      {
+        title: "Dashboard",
+      },
+    ],
+  }),
 });
 
 function HomeLoadingWrapper() {

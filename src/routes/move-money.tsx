@@ -3,6 +3,13 @@ import { ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/move-money")({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: "Move Money",
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

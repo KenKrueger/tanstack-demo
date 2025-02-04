@@ -3,6 +3,13 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/rewards")({
   component: Rewards,
+  head: () => ({
+    meta: [
+      {
+        title: "Rewards",
+      },
+    ],
+  }),
 });
 
 function Rewards() {

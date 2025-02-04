@@ -8,33 +8,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card } from "../../components/card";
 import { DateFormatter } from "../../components/DateFormatter";
 
-/** Skeleton to show while we are fetching table data */
-function TableSkeleton() {
-  return (
-    <Card className="overflow-hidden">
-      <div className="p-4">
-        {/* "Transactions" heading skeleton */}
-        <div className="h-8 bg-gray-200 w-32 rounded mb-6"></div>
-
-        {/* Skeleton rows */}
-        <div className="space-y-4">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between space-x-4 animate-pulse"
-            >
-              <div className="h-5 bg-gray-200 rounded w-24" /> {/* Date */}
-              <div className="h-5 bg-gray-200 rounded flex-1" />{" "}
-              {/* Description */}
-              <div className="h-5 bg-gray-200 rounded w-20" /> {/* Amount */}
-            </div>
-          ))}
-        </div>
-      </div>
-    </Card>
-  );
-}
-
 export const Route = createFileRoute("/accounts/index/$accountId")({
   loader: (opts) => {
     const accountId = opts.params.accountId;
@@ -42,6 +15,13 @@ export const Route = createFileRoute("/accounts/index/$accountId")({
   },
   // Shows the spinner while the route is pending (e.g. prefetching queries)
   component: HomeLoadingWrapper,
+  head: () => ({
+    meta: [
+      {
+        title: "Account Details",
+      },
+    ],
+  }),
 });
 
 function HomeLoadingWrapper() {
@@ -116,6 +96,33 @@ function RouteComponent() {
             ))}
           </tbody>
         </table>
+      </div>
+    </Card>
+  );
+}
+
+/** Skeleton to show while we are fetching table data */
+function TableSkeleton() {
+  return (
+    <Card className="overflow-hidden">
+      <div className="p-4">
+        {/* "Transactions" heading skeleton */}
+        <div className="h-8 bg-gray-200 w-32 rounded mb-6"></div>
+
+        {/* Skeleton rows */}
+        <div className="space-y-4">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between space-x-4 animate-pulse"
+            >
+              <div className="h-5 bg-gray-200 rounded w-24" /> {/* Date */}
+              <div className="h-5 bg-gray-200 rounded flex-1" />{" "}
+              {/* Description */}
+              <div className="h-5 bg-gray-200 rounded w-20" /> {/* Amount */}
+            </div>
+          ))}
+        </div>
       </div>
     </Card>
   );

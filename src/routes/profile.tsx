@@ -3,6 +3,13 @@ import { WrappedLink } from "../components/wrapped-link";
 
 export const Route = createFileRoute("/profile")({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: "Profile & Settings",
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {
