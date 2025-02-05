@@ -1,42 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  accountQueryOptions,
-  accountsQueryOptions,
-} from "../../lib/api/fake-api";
 import { Suspense } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card } from "../../components/card";
 import { DateFormatter } from "../../components/DateFormatter";
+import {
+  accountQueryOptions,
+  accountsQueryOptions,
+} from "../../lib/api/fake-api";
 
 export const Route = createFileRoute("/accounts/index/$accountId")({
   loader: (opts) => {
-    const accountId = opts.params.accountId;
+    const { accountId } = opts.params;
     opts.context.queryClient.prefetchQuery(accountQueryOptions(accountId));
   },
-  // Shows the spinner while the route is pending (e.g. prefetching queries)
   component: HomeLoadingWrapper,
-  head: () => ({
-    meta: [
-      {
-        title: "Account Details",
-      },
-    ],
-  }),
+  head: () => ({ meta: [{ title: "Account Details" }] }),
 });
 
 function HomeLoadingWrapper() {
-  // Suspense for the account list. If this is still loading, we see the route’s spinner.
   const { data: accounts } = useSuspenseQuery(accountsQueryOptions);
   const account = accounts.find(
     (acct) => acct.id === Route.useParams().accountId
   );
 
   return (
-    <div className="flex  flex-col gap-4 p-2">
-      <h1 className="p-2 text-4xl font-semibold text-zinc-800">
+    <div className="flex flex-col gap-4 p-4">
+      <h1 className="text-4xl font-semibold text-zinc-800">
         {account?.displayName}
       </h1>
-      <Card>
+      <Card className="p-4">
         <div className="text-xl">
           Available Balance: ${account?.availableBalance}
         </div>
@@ -50,18 +42,15 @@ function HomeLoadingWrapper() {
 }
 
 function RouteComponent() {
-  // Fetch the transactions for the single account
-  const params = Route.useParams();
-  const { data } = useSuspenseQuery(accountQueryOptions(params.accountId));
-
+  const { accountId } = Route.useParams();
+  const { data } = useSuspenseQuery(accountQueryOptions(accountId));
   if (!data) return null;
 
   const { transactions } = data;
-
   return (
-    <Card>
-      <h3 className="text-lg font-medium">Transaction History:</h3>
-      <div className="mt-3 overflow-x-auto">
+    <Card className="p-4">
+      <h3 className="text-lg font-medium mb-3">Transaction History:</h3>
+      <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
             <tr>
@@ -101,28 +90,18 @@ function RouteComponent() {
   );
 }
 
-/** Skeleton to show while we are fetching table data */
 function TableSkeleton() {
   return (
-    <Card className="overflow-hidden">
-      <div className="p-4">
-        {/* "Transactions" heading skeleton */}
-        <div className="h-8 bg-gray-200 w-32 rounded mb-6"></div>
-
-        {/* Skeleton rows */}
-        <div className="space-y-4">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between space-x-4 animate-pulse"
-            >
-              <div className="h-5 bg-gray-200 rounded w-24" /> {/* Date */}
-              <div className="h-5 bg-gray-200 rounded flex-1" />{" "}
-              {/* Description */}
-              <div className="h-5 bg-gray-200 rounded w-20" /> {/* Amount */}
-            </div>
-          ))}
-        </div>
+    <Card className="overflow-hidden p-4 animate-pulse">
+      <div className="h-8 bg-gray-200 w-32 rounded mb-6" />
+      <div className="space-y-4">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div key={i} className="flex items-center justify-between space-x-4">
+            <div className="h-5 bg-gray-200 rounded w-24" />
+            <div className="h-5 bg-gray-200 rounded flex-1" />
+            <div className="h-5 bg-gray-200 rounded w-20" />
+          </div>
+        ))}
       </div>
     </Card>
   );

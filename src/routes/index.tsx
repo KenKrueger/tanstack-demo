@@ -15,7 +15,7 @@ export const Route = createFileRoute("/")({
     opts.context.queryClient.prefetchQuery(accountsQueryOptions);
     opts.context.queryClient.prefetchQuery(creditScoreQueryOptions);
   },
-  component: HomeLoadingWrapper,
+  component: IndexPage,
   head: () => ({
     meta: [
       {
@@ -25,75 +25,84 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-function HomeLoadingWrapper() {
+function IndexPage() {
   return (
-    <div className="p-2">
-      <h1 className="p-2 text-4xl font-semibold text-zinc-800">Accounts</h1>
-      <Suspense fallback={<AccountsSkeleton />}>
-        <HomeComponent />
-      </Suspense>
+    <div className="min-h-screen bg-gray-50">
+      <header className="p-4 bg-white shadow-sm">
+        <h1 className="text-4xl font-semibold text-zinc-800">Accounts</h1>
+      </header>
+      <main className="max-w-4xl mx-auto p-4 space-y-8">
+        {/* Separate Suspense boundaries for accounts and credit score */}
+        <Suspense fallback={<AccountsSkeleton />}>
+          <AccountsContent />
+        </Suspense>
+        <div className="mt-8">
+          <Suspense fallback={<CreditScoreSkeleton />}>
+            <CreditScore />
+          </Suspense>
+        </div>
+      </main>
     </div>
   );
 }
 
-function HomeComponent() {
+function AccountsContent() {
   const { data: accounts } = useSuspenseQuery(accountsQueryOptions);
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-2">
-        {accounts?.map((account) => (
-          <AccountCard
-            key={account.id}
-            to="/accounts/index/$accountId"
-            params={{ accountId: account.id }}
-            title={account.displayName}
-          >
-            <div>
-              Balance: $
-              {account.balance.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-              })}
-            </div>
-          </AccountCard>
-        ))}
-      </div>
-      <Suspense fallback={<CreditScoreSkeleton />}>
-        <CreditScore />
-      </Suspense>
+    <div className="grid grid-cols-1 gap-4">
+      {accounts?.map((account) => (
+        <AccountCard
+          key={account.id}
+          to={`/accounts/index/$accountId`}
+          params={{ accountId: account.id }}
+          title={account.displayName}
+        >
+          <div>
+            Balance: $
+            {account.balance.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+            })}
+          </div>
+        </AccountCard>
+      ))}
     </div>
   );
 }
 
-interface AccountCardProps extends LinkProps {
+interface AccountCardProps {
   title: string;
   children: React.ReactNode;
+  to: string;
+  params: { accountId: string };
 }
 function AccountCard({ title, children, to, params }: AccountCardProps) {
   return (
     <WrappedLink to={to} params={params}>
-      <Card className="hover:bg-gray-100 active:bg-gray-100">
-        <div className="font-semibold text-xl">{title}</div>
+      <Card className="cursor-pointer hover:bg-gray-100 focus-visible:bg-gray-100 active:bg-gray-100 transition-colors duration-150 outline-none focus:ring-2 focus:ring-gray-300">
+        <div className="font-semibold text-xl mb-1">{title}</div>
         <div>{children}</div>
       </Card>
     </WrappedLink>
   );
 }
 
-/** Skeleton for loading state */
+/** Skeleton for the accounts loading state */
 function AccountsSkeleton() {
-  // You could dynamically calculate how many skeleton cards
-  // to show, but here we’ll just hardcode a few placeholders.
   return (
-    <div className="flex flex-col gap-2">
-      {Array.from({ length: 3 }, (_, i) => (
-        <Card
-          key={i}
-          className="flex flex-col border border-gray-300 p-5  animate-pulse"
-        >
-          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
-          <div className="h-3 bg-gray-200 rounded w-3/4" />
-        </Card>
-      ))}
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-4">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <Card
+            key={i}
+            className="p-4 cursor-pointer hover:bg-gray-100 focus-visible:bg-gray-100 active:bg-gray-100 transition-colors duration-150 outline-none focus:ring-2 focus:ring-gray-300 animate-pulse"
+          >
+            {/* Mimic title */}
+            <div className="h-6 w-1/2 bg-gray-200 rounded mb-2" />
+            {/* Mimic balance */}
+            <div className="h-4 w-1/3 bg-gray-200 rounded" />
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
