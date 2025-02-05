@@ -27,9 +27,9 @@ export const Route = createFileRoute("/")({
 
 function IndexPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       <header className="p-4 bg-white shadow-sm">
-        <h1 className="text-4xl font-semibold text-zinc-800">Accounts</h1>
+        <h1 className="text-4xl font-semibold text-zinc-800">Home</h1>
       </header>
       <main className="max-w-4xl mx-auto p-4 space-y-8">
         {/* Separate Suspense boundaries for accounts and credit score */}
