@@ -74,7 +74,7 @@ function AccountCard({ account }: { account: Account }) {
       to="/accounts/index/$accountId"
       params={{ accountId: account.id }}
     >
-      <Card className="p-4">
+      <Card className="p-4 active:bg-gray-100 transition-colors duration-150">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xl">{getAccountIcon(account.type)}</span>
           <div className="font-medium text-zinc-900">{account.displayName}</div>
