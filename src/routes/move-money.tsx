@@ -15,7 +15,7 @@ function TransfersPayments() {
   return (
     <>
       <PageHeader title="Move Money" />
-      <div className="p-4 space-y-4">
+      <div className="max-w-4xl mx-auto p-4 space-y-8">
         <MenuSection title="Your Accounts">
           <MenuItem
             href="transferspayments/transfer"
