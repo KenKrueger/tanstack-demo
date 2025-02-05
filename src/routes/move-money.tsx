@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
+import { PageHeader } from "../components/page-header";
 
 export const Route = createFileRoute("/move-money")({
   component: RouteComponent,
@@ -12,37 +13,43 @@ function RouteComponent() {
 
 function TransfersPayments() {
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-4xl font-semibold text-zinc-800">Move Money</h1>
-      <MenuSection title="Your Accounts">
-        <MenuItem
-          href="transferspayments/transfer"
-          title="Make a Transfer"
-          subtitle="Move money between your accounts."
-        />
-        <MenuItem href="#" title="Make a Payment" subtitle="Pay your Loans." />
-        <MenuItem
-          href="#"
-          title="Zelle®"
-          subtitle="Send money to friends and family."
-        />
-        <MenuItem
-          href="#"
-          title="Bill Pay"
-          subtitle="Pay bills online or send a check."
-        />
-        <MenuItem
-          href="#"
-          title="Banana Link"
-          subtitle="Send money to Members."
-        />
-        <MenuItem
-          href="#"
-          title="Wire Transfer"
-          subtitle="Send money almost anywhere."
-        />
-      </MenuSection>
-    </div>
+    <>
+      <PageHeader title="Move Money" />
+      <div className="p-4 space-y-4">
+        <MenuSection title="Your Accounts">
+          <MenuItem
+            href="transferspayments/transfer"
+            title="Make a Transfer"
+            subtitle="Move money between your accounts."
+          />
+          <MenuItem
+            href="#"
+            title="Make a Payment"
+            subtitle="Pay your Loans."
+          />
+          <MenuItem
+            href="#"
+            title="Zelle®"
+            subtitle="Send money to friends and family."
+          />
+          <MenuItem
+            href="#"
+            title="Bill Pay"
+            subtitle="Pay bills online or send a check."
+          />
+          <MenuItem
+            href="#"
+            title="Banana Link"
+            subtitle="Send money to Members."
+          />
+          <MenuItem
+            href="#"
+            title="Wire Transfer"
+            subtitle="Send money almost anywhere."
+          />
+        </MenuSection>
+      </div>
+    </>
   );
 }
 

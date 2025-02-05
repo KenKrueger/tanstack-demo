@@ -49,27 +49,20 @@ export function CreditScore() {
 export function CreditScoreSkeleton() {
   return (
     <Card>
-      <div className="flex flex-col items-center bg-white animate-pulse">
-        {/* FICO Score - text-sm (14px * 1.5 = 21px) */}
-        <div className="h-[21px] w-20 bg-gray-200 rounded mb-1"></div>
-
-        {/* Main score circle */}
-        <div className="relative flex items-center justify-center w-24 h-24">
-          <div className="absolute inset-0 bg-gray-200 rounded-full opacity-20"></div>
-          <div className="h-[45px] w-16 bg-gray-200 rounded"></div>
-        </div>
-
-        {/* Label - text-xs (12px * 1.5 = 18px) */}
-        <div className="mt-1 h-[18px] w-16 bg-gray-200 rounded"></div>
-
-        {/* Range numbers - text-xs (12px * 1.5 = 18px) */}
+      <div className="flex flex-col items-center p-4 animate-pulse">
+        {/* FICO Score label */}
+        <div className="h-[16px] w-20 bg-gray-200 rounded mb-1"></div>
+        {/* Score circle */}
+        <div className="relative w-24 h-24 rounded-full bg-gray-200"></div>
+        {/* Score label */}
+        <div className="h-[14px] w-16 bg-gray-200 rounded mt-1"></div>
+        {/* Score range */}
         <div className="w-full flex justify-between mt-2">
-          <span className="h-[18px] w-8 bg-gray-200 rounded"></span>
-          <span className="h-[18px] w-8 bg-gray-200 rounded"></span>
+          <div className="h-3 w-8 bg-gray-200 rounded"></div>
+          <div className="h-3 w-8 bg-gray-200 rounded"></div>
         </div>
-
-        {/* Update text - text-[10px] (10px * 1.5 = 15px) */}
-        <div className="h-[15px] w-24 bg-gray-200 rounded mt-1"></div>
+        {/* Updated date */}
+        <div className="h-[12px] w-24 bg-gray-200 rounded mt-1"></div>
       </div>
     </Card>
   );
