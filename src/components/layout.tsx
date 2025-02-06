@@ -37,13 +37,18 @@ function MyNavLink({ to, icon: Icon, label }: MyNavLinkProps) {
   return (
     <WrappedLink
       to={to}
-      preload="render"
-      preloadDelay={500}
       replace={isBottomNavPath}
       className={`flex flex-col items-center gap-1 p-2 
         transition-colors select-none touch-none 
         text-gray-400 hover:text-gray-600 
-        ${isActive ? "text-red-600 hover:text-red-600" : ""}`}
+        ${isActive ? " " : ""}`}
+      activeProps={
+        isActive
+          ? {
+              className: "text-red-600 hover:text-red-600",
+            }
+          : {}
+      }
       style={{
         WebkitTouchCallout: "none",
         WebkitUserSelect: "none",

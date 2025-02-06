@@ -137,6 +137,51 @@ const mockAccounts: Account[] = [
   },
 ];
 
+export interface UserProfile {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  notifications: {
+    email: boolean;
+    push: boolean;
+    sms: boolean;
+  };
+  lastLogin: string;
+}
+
+const mockProfile: UserProfile = {
+  name: "Sarah Johnson",
+  email: "s****@example.com",
+  phone: "(***) ***-4567",
+  address: "1234 Main St, Anytown, USA",
+  notifications: {
+    email: true,
+    push: true,
+    sms: false,
+  },
+  lastLogin: "2024-03-15T10:30:00Z",
+};
+
+async function fetchProfile(): Promise<UserProfile> {
+  await delay(getRandomLatency());
+  return mockProfile;
+}
+
+export const profileQueryOptions = queryOptions({
+  queryKey: ["profile"] as const,
+  queryFn: fetchProfile,
+  staleTime: 1000 * 60 * 5,
+});
+
+export function useProfile() {
+  return useQuery(profileQueryOptions);
+}
+
+export async function prefetchProfile(queryClient: QueryClient) {
+  await queryClient.prefetchQuery(profileQueryOptions);
+}
+
 // Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

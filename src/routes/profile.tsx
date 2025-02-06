@@ -2,25 +2,17 @@ import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Card } from "../components/card";
 import { PageHeader } from "../components/page-header";
-
-const mockProfile = {
-  name: "Sarah Johnson",
-  email: "s****@example.com",
-  phone: "(***) ***-4567",
-  address: "1234 Main St, Anytown, USA",
-  notifications: {
-    email: true,
-    push: true,
-    sms: false,
-  },
-  lastLogin: "2024-03-15T10:30:00Z",
-};
+import { profileQueryOptions } from "../lib/api/fake-api";
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePage,
+  loader: async (opts) => {
+    return await opts.context.queryClient.ensureQueryData(profileQueryOptions);
+  },
 });
 
 function ProfilePage() {
+  const profile = Route.useLoaderData();
   return (
     <>
       <PageHeader title="Profile" />
@@ -29,11 +21,11 @@ function ProfilePage() {
         <Card className="p-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-2xl font-semibold">
-              {mockProfile.name.charAt(0)}
+              {profile.name.charAt(0)}
             </div>
             <div>
               <h2 className="text-xl font-semibold text-zinc-900">
-                {mockProfile.name}
+                {profile.name}
               </h2>
               <p className="text-sm text-zinc-500">Member since 2022</p>
             </div>
@@ -42,9 +34,9 @@ function ProfilePage() {
 
         <Card className="divide-y">
           <Section title="Personal Information">
-            <InfoRow label="Email" value={mockProfile.email} />
-            <InfoRow label="Phone" value={mockProfile.phone} />
-            <InfoRow label="Address" value={mockProfile.address} />
+            <InfoRow label="Email" value={profile.email} />
+            <InfoRow label="Phone" value={profile.phone} />
+            <InfoRow label="Address" value={profile.address} />
           </Section>
 
           <Section title="Security">
@@ -56,22 +48,22 @@ function ProfilePage() {
               <div className="h-6 w-11 bg-green-500 rounded-full"></div>
             </div>
             <div className="text-sm text-zinc-500 mt-4">
-              Last login: {new Date(mockProfile.lastLogin).toLocaleDateString()}
+              Last login: {new Date(profile.lastLogin).toLocaleDateString()}
             </div>
           </Section>
 
           <Section title="Notification Preferences">
             <ToggleRow
               label="Email Notifications"
-              enabled={mockProfile.notifications.email}
+              enabled={profile.notifications.email}
             />
             <ToggleRow
               label="Push Notifications"
-              enabled={mockProfile.notifications.push}
+              enabled={profile.notifications.push}
             />
             <ToggleRow
               label="SMS Notifications"
-              enabled={mockProfile.notifications.sms}
+              enabled={profile.notifications.sms}
             />
           </Section>
         </Card>
