@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Suspense } from "react";
-import { createFileRoute, Link, LinkProps } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   Account,
   accountsQueryOptions,
