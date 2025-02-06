@@ -4,10 +4,6 @@ import { Card } from "../components/card";
 import { PageHeader } from "../components/page-header";
 import { profileQueryOptions } from "../lib/api/fake-api";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { DatePicker } from "../components/ui/DatePicker";
-import { Button } from "../components/ui/Button";
-import { Calendar } from "../components/ui/Calendar";
-import { Checkbox } from "../components/ui/Checkbox";
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePageWrapper,
@@ -47,10 +43,6 @@ function ProfileContent() {
               {profile.name}
             </h2>
             <p className="text-sm text-zinc-500">Member since 2022</p>
-            <DatePicker />
-            <Button>Save</Button>
-            <Calendar />
-            <Checkbox></Checkbox>
           </div>
         </div>
       </Card>

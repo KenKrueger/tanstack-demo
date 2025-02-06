@@ -36,6 +36,7 @@ function MyNavLink({ to, icon: Icon, label }: MyNavLinkProps) {
 
   return (
     <WrappedLink
+      preload="viewport"
       to={to}
       replace={isBottomNavPath}
       className={`flex flex-col items-center gap-1 p-2 
