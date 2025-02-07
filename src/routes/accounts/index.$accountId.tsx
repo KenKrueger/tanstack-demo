@@ -9,6 +9,14 @@ import {
 import { Card } from "../../components/card";
 import { DateFormatter } from "../../components/DateFormatter";
 import { WrappedLink } from "../../components/wrapped-link";
+import { DialogTrigger } from "react-aria-components";
+import { Button } from "../../components/ui/Button";
+import { Modal } from "../../components/ui/Modal";
+import { Form } from "../../components/ui/Form";
+import { Dialog } from "../../components/ui/Dialog";
+import { Select, SelectItem } from "../../components/ui/Select";
+import { TextField } from "../../components/ui/TextField";
+import { TransferForm } from "../../components/forms/transfer-form";
 
 export const Route = createFileRoute("/accounts/index/$accountId")({
   loader: (opts) => {
@@ -17,11 +25,7 @@ export const Route = createFileRoute("/accounts/index/$accountId")({
   },
   component: AccountDetailsPage,
   head: () => ({
-    meta: [
-      {
-        title: "Account Details",
-      },
-    ],
+    meta: [{ title: "Account Details" }],
   }),
 });
 
@@ -64,8 +68,15 @@ function AccountDetailsPage() {
               </div>
             </div>
           </div>
+          <DialogTrigger>
+            <Button className={"mt-4"}>Transfer</Button>
+            <Modal>
+              <Dialog>
+                <TransferForm accountId={accountId} />
+              </Dialog>
+            </Modal>
+          </DialogTrigger>
         </Card>
-
         <section>
           <Suspense fallback={<TableSkeleton />}>
             <TransactionHistory accountId={accountId} />
