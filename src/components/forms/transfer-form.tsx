@@ -31,25 +31,23 @@ function TransferFormReady({ accountId }: { accountId: string }) {
     <Form onSubmit={(e) => e.preventDefault()}>
       <h2 className="text-lg font-semibold mb-4">Transfer Money</h2>
       <Select label="Transfer from">
-        {accounts
-          .filter((account) => account.id !== fromAccount)
-          .map((account) => (
-            <SelectItem key={account.id}>
-              {formatAccountOption(account)}
-            </SelectItem>
-          ))}
+        {accounts.map((account) => (
+          <SelectItem key={account.id}>
+            {formatAccountOption(account)}
+          </SelectItem>
+        ))}
       </Select>
       <Select label="Transfer to" placeholder="Select an account">
-        {accounts
-          .filter((account) => account.id !== fromAccount)
-          .map((account) => (
-            <SelectItem key={account.id}>
-              {formatAccountOption(account)}
-            </SelectItem>
-          ))}
+        {accounts.map((account) => (
+          <SelectItem key={account.id}>
+            {formatAccountOption(account)}
+          </SelectItem>
+        ))}
       </Select>
       <TextField inputMode="decimal" label="Amount" />
-      <Button type="submit">Transfer</Button>
+      <Button slot="close" type="submit">
+        Transfer
+      </Button>
     </Form>
   );
 }
