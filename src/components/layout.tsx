@@ -32,24 +32,17 @@ interface MyNavLinkProps {
 function MyNavLink({ to, icon: Icon, label }: MyNavLinkProps) {
   const matchRoute = useMatchRoute();
   const isActive = matchRoute({ to });
-  const isBottomNavPath = useIsBottomNavPath();
 
   return (
     <WrappedLink
       preload="viewport"
       to={to}
-      replace={isBottomNavPath}
-      className={`flex flex-col items-center gap-1 p-2 
-        transition-colors select-none touch-none 
-        text-gray-400 hover:text-gray-600 
-        ${isActive ? " " : ""}`}
-      activeProps={
+      replace={true}
+      className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-200 select-none touch-none ${
         isActive
-          ? {
-              className: "text-red-600 hover:text-red-600",
-            }
-          : {}
-      }
+          ? "text-blue-600 scale-105"
+          : "text-gray-400 hover:text-gray-600"
+      }`}
       style={{
         WebkitTouchCallout: "none",
         WebkitUserSelect: "none",
@@ -57,7 +50,7 @@ function MyNavLink({ to, icon: Icon, label }: MyNavLinkProps) {
       }}
     >
       <Icon aria-hidden size={24} />
-      <span className="text-xs">{label}</span>
+      <span className="text-xs font-medium">{label}</span>
     </WrappedLink>
   );
 }
@@ -69,29 +62,39 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
   const showBackButton = canGoBack && !isBottomNavPath;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {showBackButton && (
         <Button
           onPress={() => router.history.back()}
-          className="text-black p-2 focus:outline-none focus-visible:outline-none"
+          className="fixed top-4 left-4 z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-blue-700 hover:text-blue-800 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
-          <ArrowLeftIcon className="h-7 w-7" aria-hidden />
+          <ArrowLeftIcon className="h-5 w-5" aria-hidden />
           <span className="sr-only">Back</span>
         </Button>
       )}
-      <main className="pb-[calc(4rem+env(safe-area-inset-bottom))] bg-zinc-50">
+      <main className="pb-[calc(5rem+env(safe-area-inset-bottom))]">
         {children}
       </main>
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-around bg-linear-to-t from-zinc-50 to-zinc-100 backdrop-blur-lg p-1 border-t border-gray-300 pb-[env(safe-area-inset-bottom)]">
-        <MyNavLink to="/" icon={HomeIcon} label="Home" />
-        <MyNavLink
-          to="/move-money"
-          icon={ArrowLeftRightIcon}
-          label="Move Money"
-        />
-        <MyNavLink to="/rewards" icon={GiftIcon} label="Rewards" />
-        <MyNavLink to="/profile" icon={UserRoundIcon} label="Profile" />
-      </nav>
+
+      {isBottomNavPath && (
+        <nav className="fixed bottom-0 inset-x-0 z-10">
+          <div className="bg-white/80 backdrop-blur-lg border-t border-gray-100 shadow-lg px-2 py-1">
+            <div
+              className="flex justify-around items-center max-w-md mx-auto"
+              style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+            >
+              <MyNavLink to="/" icon={HomeIcon} label="Home" />
+              <MyNavLink
+                to="/move-money"
+                icon={ArrowLeftRightIcon}
+                label="Transfer"
+              />
+              <MyNavLink to="/rewards" icon={GiftIcon} label="Rewards" />
+              <MyNavLink to="/profile" icon={UserRoundIcon} label="Profile" />
+            </div>
+          </div>
+        </nav>
+      )}
     </div>
   );
 }

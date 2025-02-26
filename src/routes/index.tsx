@@ -30,13 +30,46 @@ export const Route = createFileRoute("/")({
 function IndexPage() {
   return (
     <>
-      <PageHeader title="Home" />
-      <div className="max-w-4xl mx-auto p-4 space-y-8">
-        {/* Separate Suspense boundaries for accounts and credit score */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+        <div className="max-w-4xl mx-auto p-6 pt-8">
+          <h1 className="text-2xl font-bold">Welcome back, Sarah</h1>
+          <p className="text-blue-100 mt-1">Your financial summary</p>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto p-4 -mt-4">
+        <div className="bg-white rounded-xl shadow-lg p-4 mb-6">
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+            Quick Actions
+          </h2>
+          <div className="grid grid-cols-4 gap-2">
+            {["Transfer", "Pay Bills", "Deposit", "Investments"].map(
+              (action) => (
+                <button
+                  key={action}
+                  className="flex flex-col items-center justify-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                    <span className="text-blue-600 text-xl">+</span>
+                  </div>
+                  <span className="text-xs text-gray-700">{action}</span>
+                </button>
+              )
+            )}
+          </div>
+        </div>
+
+        <h2 className="text-lg font-semibold text-gray-800 mb-3">
+          Your Accounts
+        </h2>
         <Suspense fallback={<AccountsSkeleton />}>
           <AccountsContent />
         </Suspense>
+
         <div className="mt-8">
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+            Financial Health
+          </h2>
           <Suspense fallback={<CreditScoreSkeleton />}>
             <CreditScore />
           </Suspense>

@@ -28,55 +28,132 @@ function AccountDetailsPage() {
   const { data: accounts } = useSuspenseQuery(accountsQueryOptions);
   const { accountId } = Route.useParams();
   const account = accounts.find((acct) => acct.id === accountId);
+  const isCredit = account?.type === "CREDIT";
+
+  if (!account) return <div>Account not found</div>;
 
   return (
-    <div className="min-h-screen bg-zinc-50 p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <header>
-          <h1 className="text-4xl font-bold text-zinc-800 mb-6">
-            {account?.displayName}
-          </h1>
-        </header>
-
-        <Card className="p-6">
-          <div className="space-y-6">
-            <div>
-              <div className="text-sm text-zinc-500 font-medium">
-                Available Balance
-              </div>
-              <div className="text-4xl font-bold text-zinc-900">
-                $
-                {account?.availableBalance.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                })}
-              </div>
-            </div>
-            <div className="border-t pt-4">
-              <div className="text-sm text-zinc-500 font-medium">
-                Current Balance
-              </div>
-              <div className="text-2xl font-medium text-zinc-700">
-                $
-                {account?.balance.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                })}
-              </div>
-            </div>
+    <div className="min-h-screen">
+      <div
+        className={`bg-gradient-to-r ${
+          account.type === "CHECKING"
+            ? "from-blue-600 to-blue-800"
+            : account.type === "SAVINGS"
+            ? "from-emerald-600 to-emerald-800"
+            : "from-purple-600 to-indigo-800"
+        } text-white p-6 pt-12 pb-20`}
+      >
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl font-bold mb-2">{account.displayName}</h1>
+          <p className="text-sm opacity-80">{account.accountNumber}</p>
+          <div className="mt-6">
+            <p className="text-sm opacity-80">
+              {isCredit ? "Current Balance" : "Available Balance"}
+            </p>
+            <p className="text-4xl font-bold">
+              $
+              {(isCredit
+                ? account.balance
+                : account.availableBalance
+              ).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
+            </p>
           </div>
-          <DialogTrigger>
-            <Button className={"mt-4"}>Transfer</Button>
-            <Modal>
-              <Dialog>
-                <TransferForm accountId={accountId} />
-              </Dialog>
-            </Modal>
-          </DialogTrigger>
-        </Card>
-        <section>
-          <Suspense fallback={<TableSkeleton />}>
-            <TransactionHistory accountId={accountId} />
-          </Suspense>
-        </section>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto -mt-12 px-4">
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div>
+              <p className="text-sm text-gray-500">
+                {isCredit ? "Available Credit" : "Current Balance"}
+              </p>
+              <p className="text-xl font-semibold">
+                $
+                {(isCredit
+                  ? account.availableCredit
+                  : account.balance
+                ).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-500">
+                {isCredit ? "Credit Limit" : "Routing Number"}
+              </p>
+              <p className="text-xl font-semibold">
+                {isCredit
+                  ? `$${account.creditLimit.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                    })}`
+                  : account.routingNumber}
+              </p>
+            </div>
+
+            {isCredit && (
+              <>
+                <div>
+                  <p className="text-sm text-gray-500">Due Date</p>
+                  <p className="text-xl font-semibold">
+                    <DateFormatter date={account.dueDate} />
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Minimum Payment</p>
+                  <p className="text-xl font-semibold">
+                    ${account.minimumPayment}
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="flex gap-3">
+            <DialogTrigger>
+              <Button variant="primary" className="flex-1">
+                {isCredit ? "Make a Payment" : "Transfer Money"}
+              </Button>
+              <Modal>
+                <Dialog>
+                  <TransferForm accountId={accountId} />
+                </Dialog>
+              </Modal>
+            </DialogTrigger>
+
+            <Button variant="secondary" className="flex-1">
+              {isCredit ? "View Statement" : "Download Details"}
+            </Button>
+          </div>
+        </div>
+
+        <h2 className="text-xl font-semibold mb-4">Recent Transactions</h2>
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="divide-y">
+            {account.transactions?.slice(0, 10).map((tx, i) => (
+              <div key={i} className="p-4 hover:bg-gray-50">
+                <div className="flex justify-between">
+                  <div>
+                    <p className="font-medium">{tx.description}</p>
+                    <p className="text-sm text-gray-500">
+                      <DateFormatter date={tx.date} />
+                    </p>
+                  </div>
+                  <p
+                    className={`font-semibold ${
+                      tx.amount < 0 ? "text-red-600" : "text-green-600"
+                    }`}
+                  >
+                    {tx.amount < 0 ? "-" : "+"}${Math.abs(tx.amount).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
