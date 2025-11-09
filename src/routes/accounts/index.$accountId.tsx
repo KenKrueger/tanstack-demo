@@ -41,24 +41,26 @@ function AccountDetailsPage() {
             : account.type === "SAVINGS"
             ? "from-emerald-600 to-emerald-800"
             : "from-purple-600 to-indigo-800"
-        } text-white p-6 pt-12 pb-20`}
+        } text-white pt-[env(safe-area-inset-top)]`}
       >
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold mb-2">{account.displayName}</h1>
-          <p className="text-sm opacity-80">{account.accountNumber}</p>
-          <div className="mt-6">
-            <p className="text-sm opacity-80">
-              {isCredit ? "Current Balance" : "Available Balance"}
-            </p>
-            <p className="text-4xl font-bold">
-              $
-              {(isCredit
-                ? account.balance
-                : account.availableBalance
-              ).toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-              })}
-            </p>
+        <div className="p-6 pt-12 pb-20">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-2xl font-bold mb-2">{account.displayName}</h1>
+            <p className="text-sm opacity-80">{account.accountNumber}</p>
+            <div className="mt-6">
+              <p className="text-sm opacity-80">
+                {isCredit ? "Current Balance" : "Available Balance"}
+              </p>
+              <p className="text-4xl font-bold">
+                $
+                {(isCredit
+                  ? account.balance
+                  : account.availableBalance
+                ).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
+            </div>
           </div>
         </div>
       </div>
