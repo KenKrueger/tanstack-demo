@@ -8,104 +8,44 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as WarmupRouteImport } from './routes/warmup'
+import { Route as RewardsRouteImport } from './routes/rewards'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as MoveMoneyRouteImport } from './routes/move-money'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccountsIndexAccountIdRouteImport } from './routes/accounts/index.$accountId'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as WarmupImport } from './routes/warmup'
-import { Route as RewardsImport } from './routes/rewards'
-import { Route as ProfileImport } from './routes/profile'
-import { Route as MoveMoneyImport } from './routes/move-money'
-import { Route as IndexImport } from './routes/index'
-import { Route as AccountsIndexAccountIdImport } from './routes/accounts/index.$accountId'
-
-// Create/Update Routes
-
-const WarmupRoute = WarmupImport.update({
+const WarmupRoute = WarmupRouteImport.update({
   id: '/warmup',
   path: '/warmup',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const RewardsRoute = RewardsImport.update({
+const RewardsRoute = RewardsRouteImport.update({
   id: '/rewards',
   path: '/rewards',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ProfileRoute = ProfileImport.update({
+const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const MoveMoneyRoute = MoveMoneyImport.update({
+const MoveMoneyRoute = MoveMoneyRouteImport.update({
   id: '/move-money',
   path: '/move-money',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AccountsIndexAccountIdRoute = AccountsIndexAccountIdImport.update({
+const AccountsIndexAccountIdRoute = AccountsIndexAccountIdRouteImport.update({
   id: '/accounts/index/$accountId',
   path: '/accounts/index/$accountId',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/move-money': {
-      id: '/move-money'
-      path: '/move-money'
-      fullPath: '/move-money'
-      preLoaderRoute: typeof MoveMoneyImport
-      parentRoute: typeof rootRoute
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileImport
-      parentRoute: typeof rootRoute
-    }
-    '/rewards': {
-      id: '/rewards'
-      path: '/rewards'
-      fullPath: '/rewards'
-      preLoaderRoute: typeof RewardsImport
-      parentRoute: typeof rootRoute
-    }
-    '/warmup': {
-      id: '/warmup'
-      path: '/warmup'
-      fullPath: '/warmup'
-      preLoaderRoute: typeof WarmupImport
-      parentRoute: typeof rootRoute
-    }
-    '/accounts/index/$accountId': {
-      id: '/accounts/index/$accountId'
-      path: '/accounts/index/$accountId'
-      fullPath: '/accounts/index/$accountId'
-      preLoaderRoute: typeof AccountsIndexAccountIdImport
-      parentRoute: typeof rootRoute
-    }
-  }
-}
-
-// Create and export the route tree
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -115,7 +55,6 @@ export interface FileRoutesByFullPath {
   '/warmup': typeof WarmupRoute
   '/accounts/index/$accountId': typeof AccountsIndexAccountIdRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/move-money': typeof MoveMoneyRoute
@@ -124,9 +63,8 @@ export interface FileRoutesByTo {
   '/warmup': typeof WarmupRoute
   '/accounts/index/$accountId': typeof AccountsIndexAccountIdRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/move-money': typeof MoveMoneyRoute
   '/profile': typeof ProfileRoute
@@ -134,7 +72,6 @@ export interface FileRoutesById {
   '/warmup': typeof WarmupRoute
   '/accounts/index/$accountId': typeof AccountsIndexAccountIdRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -162,7 +99,6 @@ export interface FileRouteTypes {
     | '/accounts/index/$accountId'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MoveMoneyRoute: typeof MoveMoneyRoute
@@ -170,6 +106,53 @@ export interface RootRouteChildren {
   RewardsRoute: typeof RewardsRoute
   WarmupRoute: typeof WarmupRoute
   AccountsIndexAccountIdRoute: typeof AccountsIndexAccountIdRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/warmup': {
+      id: '/warmup'
+      path: '/warmup'
+      fullPath: '/warmup'
+      preLoaderRoute: typeof WarmupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rewards': {
+      id: '/rewards'
+      path: '/rewards'
+      fullPath: '/rewards'
+      preLoaderRoute: typeof RewardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/move-money': {
+      id: '/move-money'
+      path: '/move-money'
+      fullPath: '/move-money'
+      preLoaderRoute: typeof MoveMoneyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accounts/index/$accountId': {
+      id: '/accounts/index/$accountId'
+      path: '/accounts/index/$accountId'
+      fullPath: '/accounts/index/$accountId'
+      preLoaderRoute: typeof AccountsIndexAccountIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -180,43 +163,6 @@ const rootRouteChildren: RootRouteChildren = {
   WarmupRoute: WarmupRoute,
   AccountsIndexAccountIdRoute: AccountsIndexAccountIdRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/move-money",
-        "/profile",
-        "/rewards",
-        "/warmup",
-        "/accounts/index/$accountId"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/move-money": {
-      "filePath": "move-money.tsx"
-    },
-    "/profile": {
-      "filePath": "profile.tsx"
-    },
-    "/rewards": {
-      "filePath": "rewards.tsx"
-    },
-    "/warmup": {
-      "filePath": "warmup.tsx"
-    },
-    "/accounts/index/$accountId": {
-      "filePath": "accounts/index.$accountId.tsx"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
