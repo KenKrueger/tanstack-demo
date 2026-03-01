@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Card } from "../components/card";
-import { PageHeader } from "../components/page-header";
+import { RouteHeroHeader } from "../components/route-hero-header";
 import { profileQueryOptions } from "../lib/api/fake-api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
@@ -29,7 +29,11 @@ export const Route = createFileRoute("/profile")({
 function ProfilePageWrapper() {
   return (
     <>
-      <PageHeader title="Profile" />
+      <RouteHeroHeader
+        title="Profile"
+        subtitle="Your details and preferences"
+        theme="profile"
+      />
       <div className="max-w-2xl mx-auto p-4">
         <Suspense fallback={<ProfileSkeleton />}>
           <ProfileContent />

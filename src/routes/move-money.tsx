@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
-import { PageHeader } from "../components/page-header";
+import { RouteHeroHeader } from "../components/route-hero-header";
 
 export const Route = createFileRoute("/move-money")({
   component: RouteComponent,
@@ -10,7 +10,11 @@ export const Route = createFileRoute("/move-money")({
 function RouteComponent() {
   return (
     <>
-      <PageHeader title="Move Money" />
+      <RouteHeroHeader
+        title="Move Money"
+        subtitle="Transfer and payment tools"
+        theme="moveMoney"
+      />
       <div className="max-w-4xl mx-auto p-4 space-y-8">
         <TransfersPayments />
         <div className="max-w-2xl">

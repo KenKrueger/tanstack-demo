@@ -15,20 +15,11 @@ import { Button } from "react-aria-components";
 import { WrappedLink } from "./wrapped-link";
 import { useTabHistoryMode } from "../lib/tab-history-mode";
 import { haptic } from "../lib/haptic";
-
-const BOTTOM_NAV_PATHS = ["/", "/move-money", "/rewards", "/profile"] as const;
+import { MAIN_NAV_THEMES, getMainNavPathname } from "../lib/main-nav-themes";
 
 function useIsBottomNavPath() {
   const location = useLocation();
-  return BOTTOM_NAV_PATHS.some((basePath) => {
-    if (basePath === "/") {
-      return location.pathname === "/";
-    }
-    return (
-      location.pathname === basePath ||
-      location.pathname.startsWith(`${basePath}/`)
-    );
-  });
+  return getMainNavPathname(location.pathname) !== null;
 }
 
 interface MyNavLinkProps {
@@ -66,8 +57,9 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const canGoBack = useCanGoBack();
   const location = useLocation();
+  const mainNavPathname = getMainNavPathname(location.pathname);
+  const mainNavTheme = mainNavPathname ? MAIN_NAV_THEMES[mainNavPathname] : null;
   const isBottomNavPath = useIsBottomNavPath();
-  const isHomePath = location.pathname === "/";
   const showBackButton = canGoBack && !isBottomNavPath;
   const tabHistoryMode = useTabHistoryMode();
   const replaceTabHistory = tabHistoryMode === "native";
@@ -77,10 +69,10 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen min-h-[100svh] bg-zinc-50">
-      {isHomePath && (
+      {mainNavTheme && (
         <div
           aria-hidden
-          className="pointer-events-none fixed inset-x-0 top-0 z-[5] h-[var(--effective-safe-area-top)] bg-gradient-to-r from-blue-600 to-indigo-700"
+          className={`pointer-events-none fixed inset-x-0 top-0 z-[5] h-[var(--effective-safe-area-top)] bg-gradient-to-r ${mainNavTheme.gradientClassName}`}
         />
       )}
       {showBackButton && (
