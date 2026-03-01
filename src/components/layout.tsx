@@ -83,12 +83,15 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
           <span className="sr-only">Back</span>
         </Button>
       )}
-      <main style={{ paddingBottom: mainPaddingBottom }}>
+      <main className="vtMain" style={{ paddingBottom: mainPaddingBottom }}>
         {children}
       </main>
 
       {isBottomNavPath && (
-        <nav aria-label="Primary" className="fixed bottom-0 inset-x-0 z-10">
+        <nav
+          aria-label="Primary"
+          className="vtTabbar fixed bottom-0 inset-x-0 z-10"
+        >
           <div className="border-t border-stone-200/60 bg-white/85 px-2 pb-[var(--effective-safe-area-bottom)] shadow-lg backdrop-blur-xl">
             <div className="mx-auto flex min-h-[var(--bottom-nav-height)] max-w-md items-center">
               <MyNavLink to="/" icon={HomeIcon} label="Home" replace={replaceTabHistory} />

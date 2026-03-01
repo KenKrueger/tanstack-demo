@@ -73,6 +73,14 @@ body {
     0 8px 24px rgb(120 80 30 / 0.03);
 }
 
+.vtMain {
+  view-transition-name: main;
+}
+
+.vtTabbar {
+  view-transition-name: tabbar;
+}
+
 @keyframes vt-fade-in {
   from {
     opacity: 0.7;
@@ -141,58 +149,64 @@ body {
   }
 }
 
-::view-transition-group(root) {
+::view-transition-group(main) {
   animation-duration: 360ms;
   animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
+::view-transition-old(main),
+::view-transition-new(main) {
   animation-duration: 360ms;
   animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
   animation-fill-mode: both;
   transform-origin: left center;
 }
 
-::view-transition-new(root) {
+::view-transition-new(main) {
   z-index: 2;
 }
 
-::view-transition-old(root) {
+::view-transition-old(main) {
   z-index: 1;
 }
 
-html:active-view-transition-type(fade) ::view-transition-old(root) {
+::view-transition-group(tabbar),
+::view-transition-old(tabbar),
+::view-transition-new(tabbar) {
+  animation: none !important;
+}
+
+html:active-view-transition-type(fade) ::view-transition-old(main) {
   animation-name: vt-fade-out;
 }
 
-html:active-view-transition-type(fade) ::view-transition-new(root) {
+html:active-view-transition-type(fade) ::view-transition-new(main) {
   animation-name: vt-fade-in;
 }
 
-html:active-view-transition-type(push) ::view-transition-old(root),
-html:active-view-transition-type(forward) ::view-transition-old(root) {
+html:active-view-transition-type(push) ::view-transition-old(main),
+html:active-view-transition-type(forward) ::view-transition-old(main) {
   animation-name: vt-slide-out-to-left;
 }
 
-html:active-view-transition-type(push) ::view-transition-new(root),
-html:active-view-transition-type(forward) ::view-transition-new(root) {
+html:active-view-transition-type(push) ::view-transition-new(main),
+html:active-view-transition-type(forward) ::view-transition-new(main) {
   animation-name: vt-slide-in-from-right;
 }
 
-html:active-view-transition-type(pop) ::view-transition-old(root),
-html:active-view-transition-type(back) ::view-transition-old(root) {
+html:active-view-transition-type(pop) ::view-transition-old(main),
+html:active-view-transition-type(back) ::view-transition-old(main) {
   animation-name: vt-slide-out-to-right;
 }
 
-html:active-view-transition-type(pop) ::view-transition-new(root),
-html:active-view-transition-type(back) ::view-transition-new(root) {
+html:active-view-transition-type(pop) ::view-transition-new(main),
+html:active-view-transition-type(back) ::view-transition-new(main) {
   animation-name: vt-slide-in-from-left;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  ::view-transition-old(main),
+  ::view-transition-new(main) {
     animation-duration: 1ms;
   }
 }

@@ -1,11 +1,13 @@
 import * as React from "react";
 import { Suspense } from "react";
+import { flushSync } from "react-dom";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Account,
   accountsQueryOptions,
   creditScoreQueryOptions,
 } from "../lib/api/fake-api";
+import { markPendingAccountCardTransition } from "../lib/account-card-transition";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CreditScore, CreditScoreSkeleton } from "../components/credit-score";
 import { Card } from "../components/card";
@@ -136,16 +138,35 @@ function IndexPage() {
 
 function AccountsContent() {
   const { data: accounts } = useSuspenseQuery(accountsQueryOptions);
+  const [activeAccountTransitionId, setActiveAccountTransitionId] =
+    React.useState<string | null>(null);
+
   return (
     <div className="grid gap-3 p-2">
       {accounts.map((account) => (
-        <AccountCard key={account.id} account={account} />
+        <AccountCard
+          key={account.id}
+          account={account}
+          activeAccountTransitionId={activeAccountTransitionId}
+          onPrepareTransition={(accountId) => {
+            flushSync(() => setActiveAccountTransitionId(accountId));
+            markPendingAccountCardTransition(accountId);
+          }}
+        />
       ))}
     </div>
   );
 }
 
-function AccountCard({ account }: { account: Account }) {
+function AccountCard({
+  account,
+  activeAccountTransitionId,
+  onPrepareTransition,
+}: {
+  account: Account;
+  activeAccountTransitionId: string | null;
+  onPrepareTransition: (accountId: string) => void;
+}) {
   const getAccountStyle = (type: Account["type"]) => {
     switch (type) {
       case "CHECKING":
@@ -163,41 +184,49 @@ function AccountCard({ account }: { account: Account }) {
     <WrappedLink
       to="/accounts/index/$accountId"
       params={{ accountId: account.id }}
+      onPressStart={() => onPrepareTransition(account.id)}
     >
-      <Card className="p-4 active:scale-[0.98] transition-all duration-150 relative overflow-hidden">
-        <div
-          className={`absolute left-0 top-0 bottom-0 w-1 ${style.accent} rounded-l`}
-        />
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-lg">{style.icon}</span>
-              <div className="font-medium text-stone-800 text-sm">
-                {account.displayName}
+      <div
+        style={{
+          viewTransitionName:
+            activeAccountTransitionId === account.id ? "account-card" : "none",
+        }}
+      >
+        <Card className="p-4 active:scale-[0.98] transition-all duration-150 relative overflow-hidden">
+          <div
+            className={`absolute left-0 top-0 bottom-0 w-1 ${style.accent} rounded-l`}
+          />
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-lg">{style.icon}</span>
+                <div className="font-medium text-stone-800 text-sm">
+                  {account.displayName}
+                </div>
               </div>
-            </div>
-            <div className="text-2xl font-semibold text-stone-900 font-display">
-              $
-              {account.balance.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-              })}
-            </div>
-            {account.type === "CREDIT" && (
-              <div className="text-xs text-stone-500 mt-1">
-                ${account.availableCredit.toLocaleString()} available
+              <div className="text-2xl font-semibold text-stone-900 font-display">
+                $
+                {account.balance.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
               </div>
-            )}
+              {account.type === "CREDIT" && (
+                <div className="text-xs text-stone-500 mt-1">
+                  ${account.availableCredit.toLocaleString()} available
+                </div>
+              )}
+            </div>
+            <div className="text-stone-300">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                />
+              </svg>
+            </div>
           </div>
-          <div className="text-stone-300">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fillRule="evenodd"
-                d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-              />
-            </svg>
-          </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </WrappedLink>
   );
 }
