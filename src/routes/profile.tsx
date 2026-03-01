@@ -4,6 +4,12 @@ import { Card } from "../components/card";
 import { PageHeader } from "../components/page-header";
 import { profileQueryOptions } from "../lib/api/fake-api";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  TabHistoryMode,
+  setTabHistoryMode,
+  useTabHistoryMode,
+} from "../lib/tab-history-mode";
+import { haptic } from "../lib/haptic";
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePageWrapper,
@@ -68,6 +74,12 @@ function ProfileContent() {
           <InfoRow label="Last login" value="March 15, 2024" />
           <InfoRow label="Two-factor auth" value="Enabled" />
           <InfoRow label="Member since" value="2022" />
+        </Section>
+      </Card>
+
+      <Card className="divide-y">
+        <Section title="Navigation">
+          <TabHistoryModeRow />
         </Section>
       </Card>
     </div>
@@ -138,5 +150,65 @@ function ToggleRow({ label, enabled }: { label: string; enabled: boolean }) {
         }`}
       ></div>
     </div>
+  );
+}
+
+function TabHistoryModeRow() {
+  const tabHistoryMode = useTabHistoryMode();
+
+  return (
+    <div className="space-y-2">
+      <div className="text-sm font-medium text-zinc-900">Bottom tab back behavior</div>
+      <p className="text-xs text-zinc-500">
+        Native mode keeps tab switches out of browser history. Web mode includes tab
+        switches in history.
+      </p>
+      <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-50 p-1">
+        <ModeButton
+          mode="native"
+          currentMode={tabHistoryMode}
+          label="Native"
+          onSelect={setTabHistoryMode}
+        />
+        <ModeButton
+          mode="web"
+          currentMode={tabHistoryMode}
+          label="Web"
+          onSelect={setTabHistoryMode}
+        />
+      </div>
+    </div>
+  );
+}
+
+function ModeButton({
+  mode,
+  currentMode,
+  label,
+  onSelect,
+}: {
+  mode: TabHistoryMode;
+  currentMode: TabHistoryMode;
+  label: string;
+  onSelect: (mode: TabHistoryMode) => void;
+}) {
+  const selected = currentMode === mode;
+
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={() => {
+        haptic(15);
+        onSelect(mode);
+      }}
+      className={`touch-control rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+        selected
+          ? "bg-blue-600 text-white shadow-sm"
+          : "bg-transparent text-zinc-700 hover:bg-zinc-100"
+      }`}
+    >
+      {label}
+    </button>
   );
 }

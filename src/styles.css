@@ -7,14 +7,34 @@
   }
 }
 
-html {
-  min-height: calc(100% + env(safe-area-inset-top));
-  padding: env(safe-area-inset-top) env(safe-area-inset-right)
-    env(safe-area-inset-bottom) env(safe-area-inset-left);
+:root {
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-max-bottom: env(safe-area-max-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --effective-safe-area-bottom: max(
+    var(--safe-area-bottom),
+    var(--safe-area-max-bottom)
+  );
+  --bottom-nav-height: 5rem;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+.touch-control {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
