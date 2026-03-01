@@ -9,6 +9,63 @@ import { CriticalErrorFallback } from "./critical-error-fallback";
 import { installSafeAreaBridge } from "./lib/safe-area-bridge";
 import { initializeSafeAreaOverrides } from "./lib/safe-area-overrides";
 
+type LocationWithHistoryIndex = {
+  pathname: string;
+  href: string;
+  hash: string;
+  state?: unknown;
+};
+
+type ViewTransitionLocationChange = {
+  fromLocation?: LocationWithHistoryIndex;
+  toLocation: LocationWithHistoryIndex;
+  pathChanged: boolean;
+  hrefChanged: boolean;
+  hashChanged: boolean;
+};
+
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function getHistoryIndex(location?: LocationWithHistoryIndex): number | null {
+  if (!location || typeof location.state !== "object" || location.state === null) {
+    return null;
+  }
+
+  const maybeIndex = (location.state as { __TSR_index?: unknown }).__TSR_index;
+  return typeof maybeIndex === "number" ? maybeIndex : null;
+}
+
+function resolveViewTransitionTypes({
+  fromLocation,
+  toLocation,
+  pathChanged,
+  hrefChanged,
+  hashChanged,
+}: ViewTransitionLocationChange): string[] | false {
+  if (prefersReducedMotion()) return false;
+
+  const doc = document as Document & { activeViewTransition?: unknown };
+  if (doc.activeViewTransition) return false;
+
+  if (!pathChanged || !hrefChanged) return false;
+  if (hashChanged && fromLocation?.pathname === toLocation.pathname) return false;
+
+  const fromIndex = getHistoryIndex(fromLocation);
+  const toIndex = getHistoryIndex(toLocation);
+
+  if (fromIndex !== null && toIndex !== null) {
+    if (toIndex > fromIndex) return ["forward"];
+    if (toIndex < fromIndex) return ["back"];
+  }
+
+  return ["fade"];
+}
+
 export const queryClient = new QueryClient();
 installSafeAreaBridge();
 initializeSafeAreaOverrides();
@@ -25,7 +82,9 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
   scrollRestoration: true,
   defaultPendingComponent: Spinner,
-  defaultViewTransition: false,
+  defaultViewTransition: {
+    types: resolveViewTransitionTypes,
+  },
 });
 
 // Register things for typesafety
