@@ -40,6 +40,21 @@ function isMobileViewport() {
   );
 }
 
+function isIOSSafari() {
+  if (typeof navigator === "undefined" || typeof document === "undefined") {
+    return false;
+  }
+
+  const ua = navigator.userAgent;
+  const isIOS =
+    /iPad|iPhone|iPod/.test(ua) ||
+    (ua.includes("Mac") && "ontouchend" in document);
+  const isWebKit =
+    ua.includes("AppleWebKit") && !ua.includes("CriOS") && !ua.includes("FxiOS");
+
+  return isIOS && isWebKit;
+}
+
 function getHistoryIndex(location?: LocationWithHistoryIndex): number | null {
   if (!location || typeof location.state !== "object" || location.state === null) {
     return null;
@@ -56,7 +71,7 @@ function resolveViewTransitionTypes({
   hrefChanged,
   hashChanged,
 }: ViewTransitionLocationChange): string[] | false {
-  if (isMobileViewport()) return false;
+  if (!isMobileViewport()) return false;
   if (prefersReducedMotion()) return false;
 
   const doc = document as Document & { activeViewTransition?: unknown };
@@ -69,11 +84,15 @@ function resolveViewTransitionTypes({
   const toIndex = getHistoryIndex(toLocation);
 
   if (fromIndex !== null && toIndex !== null) {
-    if (toIndex > fromIndex) return ["forward"];
-    if (toIndex < fromIndex) return ["back"];
+    if (toIndex > fromIndex) return ["push"];
+    if (toIndex < fromIndex) {
+      // Keep iOS swipe-back gesture as the only back animation.
+      if (isIOSSafari()) return false;
+      return ["pop"];
+    }
   }
 
-  return ["forward"];
+  return ["push"];
 }
 
 export const queryClient = new QueryClient();

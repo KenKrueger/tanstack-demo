@@ -170,18 +170,22 @@ html:active-view-transition-type(fade) ::view-transition-new(root) {
   animation-name: vt-fade-in;
 }
 
+html:active-view-transition-type(push) ::view-transition-old(root),
 html:active-view-transition-type(forward) ::view-transition-old(root) {
   animation-name: vt-slide-out-to-left;
 }
 
+html:active-view-transition-type(push) ::view-transition-new(root),
 html:active-view-transition-type(forward) ::view-transition-new(root) {
   animation-name: vt-slide-in-from-right;
 }
 
+html:active-view-transition-type(pop) ::view-transition-old(root),
 html:active-view-transition-type(back) ::view-transition-old(root) {
   animation-name: vt-slide-out-to-right;
 }
 
+html:active-view-transition-type(pop) ::view-transition-new(root),
 html:active-view-transition-type(back) ::view-transition-new(root) {
   animation-name: vt-slide-in-from-left;
 }
