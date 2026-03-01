@@ -73,7 +73,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
         <Button
           onPress={() => router.history.back()}
           onPressStart={() => haptic(40)}
-          className="fixed top-4 left-4 z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-blue-700 hover:text-blue-800 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="fixed left-4 top-[calc(var(--safe-area-top)+1rem)] z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-blue-700 hover:text-blue-800 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <ArrowLeftIcon className="h-5 w-5" aria-hidden />
           <span className="sr-only">Back</span>

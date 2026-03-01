@@ -29,9 +29,9 @@ export const Route = createFileRoute("/")({
 
 function IndexPage() {
   return (
-    <>
+      <>
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-        <div className="max-w-4xl mx-auto p-6 pt-8">
+        <div className="max-w-4xl mx-auto px-6 pb-6 pt-[calc(var(--safe-area-top)+2rem)]">
           <h1 className="text-2xl font-bold">Welcome back, Sarah</h1>
           <p className="text-blue-100 mt-1">Your financial summary</p>
         </div>
