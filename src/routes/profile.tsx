@@ -199,7 +199,7 @@ function ModeButton({
       type="button"
       aria-pressed={selected}
       onClick={() => {
-        haptic(15);
+        haptic(40);
         onSelect(mode);
       }}
       className={`touch-control rounded-md px-3 py-2 text-sm font-medium transition-colors ${

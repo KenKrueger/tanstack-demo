@@ -1,6 +1,14 @@
+function isLikelyIOS() {
+  if (typeof navigator === "undefined") return false;
+  return (
+    /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
 export const supportsHaptic =
   typeof window !== "undefined"
-    ? window.matchMedia("(pointer: coarse)").matches
+    ? window.matchMedia("(pointer: coarse)").matches || isLikelyIOS()
     : false;
 
 /**
@@ -18,21 +26,19 @@ function hasVibrate(
  */
 export function haptic(pattern: number | number[] = 50) {
   try {
-    if (!supportsHaptic || typeof document === "undefined") return;
+    if (typeof window === "undefined" || typeof document === "undefined") return;
 
     if (hasVibrate(navigator)) {
       navigator.vibrate(pattern);
       return;
     }
 
+    if (!supportsHaptic) return;
+
     // iOS fallback: synthesize a switch toggle interaction.
     const label = document.createElement("label");
-    label.setAttribute("aria-hidden", "true");
-    label.style.position = "fixed";
-    label.style.left = "-9999px";
-    label.style.top = "0";
-    label.style.opacity = "0";
-    label.style.pointerEvents = "none";
+    label.ariaHidden = "true";
+    label.style.display = "none";
 
     const input = document.createElement("input");
     input.type = "checkbox";
@@ -40,13 +46,12 @@ export function haptic(pattern: number | number[] = 50) {
     label.appendChild(input);
 
     try {
-      document.body.appendChild(label);
-      input.click();
+      document.head.appendChild(label);
+      label.click();
     } finally {
-      label.remove();
+      document.head.removeChild(label);
     }
   } catch {
     // Ignore failures and keep interactions non-blocking.
   }
 }
-

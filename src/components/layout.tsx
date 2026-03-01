@@ -41,9 +41,10 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
       preload="viewport"
       to={to}
       replace={replace}
-      onPressStart={() => haptic(15)}
+      onPressStart={() => haptic(40)}
+      onContextMenu={(event) => event.preventDefault()}
       aria-current={isActive ? "page" : undefined}
-      className={`touch-control flex min-h-11 min-w-11 flex-1 flex-col items-center justify-center gap-1 rounded-xl p-2 transition-all duration-200 ${
+      className={`touch-control [-webkit-user-drag:none] flex min-h-11 min-w-11 flex-1 flex-col items-center justify-center gap-1 rounded-xl p-2 transition-all duration-200 ${
         isActive
           ? "text-blue-600 scale-105"
           : "text-gray-400 hover:text-gray-600"
@@ -71,7 +72,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
       {showBackButton && (
         <Button
           onPress={() => router.history.back()}
-          onPressStart={() => haptic(15)}
+          onPressStart={() => haptic(40)}
           className="fixed top-4 left-4 z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-blue-700 hover:text-blue-800 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <ArrowLeftIcon className="h-5 w-5" aria-hidden />
