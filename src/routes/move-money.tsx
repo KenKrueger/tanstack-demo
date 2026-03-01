@@ -10,8 +10,13 @@ export const Route = createFileRoute("/move-money")({
 function RouteComponent() {
   return (
     <>
-      <TransfersPayments />
-      <Outlet />
+      <PageHeader title="Move Money" />
+      <div className="max-w-4xl mx-auto p-4 space-y-8">
+        <TransfersPayments />
+        <div className="max-w-2xl">
+          <Outlet />
+        </div>
+      </div>
     </>
   );
 }
@@ -19,41 +24,33 @@ function RouteComponent() {
 function TransfersPayments() {
   return (
     <>
-      <PageHeader title="Move Money" />
-      <div className="max-w-4xl mx-auto p-4 space-y-8">
-        <MenuSection title="Your Accounts">
-          <MenuItem
-            href="/move-money/transfer"
-            title="Make a Transfer"
-            subtitle="Move money between your accounts."
-          />
-          <MenuItem
-            href="#"
-            title="Make a Payment"
-            subtitle="Pay your Loans."
-          />
-          <MenuItem
-            href="#"
-            title="Zelle®"
-            subtitle="Send money to friends and family."
-          />
-          <MenuItem
-            href="#"
-            title="Bill Pay"
-            subtitle="Pay bills online or send a check."
-          />
-          <MenuItem
-            href="#"
-            title="Banana Link"
-            subtitle="Send money to Members."
-          />
-          <MenuItem
-            href="#"
-            title="Wire Transfer"
-            subtitle="Send money almost anywhere."
-          />
-        </MenuSection>
-      </div>
+      <MenuSection title="Your Accounts">
+        <MenuItem
+          to="/move-money/transfer"
+          title="Make a Transfer"
+          subtitle="Move money between your accounts."
+        />
+        <MenuItem
+          title="Make a Payment"
+          subtitle="Pay your Loans."
+        />
+        <MenuItem
+          title="Zelle®"
+          subtitle="Send money to friends and family."
+        />
+        <MenuItem
+          title="Bill Pay"
+          subtitle="Pay bills online or send a check."
+        />
+        <MenuItem
+          title="Banana Link"
+          subtitle="Send money to Members."
+        />
+        <MenuItem
+          title="Wire Transfer"
+          subtitle="Send money almost anywhere."
+        />
+      </MenuSection>
     </>
   );
 }
@@ -78,19 +75,31 @@ function MenuSection({
 function MenuItem({
   title,
   subtitle,
-  href,
+  to,
 }: {
   title: string | React.ReactNode;
   subtitle: string | React.ReactNode;
-  href: string;
+  to?: string;
 }) {
   return (
     <li className="flex flex-row justify-between items-center border-b border-gray-200 p-4">
-      <Link to={href as any} className="no-underline text-inherit">
-        <div className="font-semibold">{title}</div>
-        <div className="text-sm text-gray-500">{subtitle}</div>
-      </Link>
-      <ChevronRight aria-hidden className="text-blue-400" />
+      {to ? (
+        <>
+          <Link to={to as any} resetScroll={false} className="no-underline text-inherit flex-1">
+            <div className="font-semibold">{title}</div>
+            <div className="text-sm text-gray-500">{subtitle}</div>
+          </Link>
+          <ChevronRight aria-hidden className="text-blue-400" />
+        </>
+      ) : (
+        <>
+          <div className="text-inherit flex-1">
+            <div className="font-semibold">{title}</div>
+            <div className="text-sm text-gray-500">{subtitle}</div>
+          </div>
+          <ChevronRight aria-hidden className="text-gray-300" />
+        </>
+      )}
     </li>
   );
 }

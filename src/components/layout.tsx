@@ -20,9 +20,15 @@ const BOTTOM_NAV_PATHS = ["/", "/move-money", "/rewards", "/profile"] as const;
 
 function useIsBottomNavPath() {
   const location = useLocation();
-  return BOTTOM_NAV_PATHS.includes(
-    location.pathname as (typeof BOTTOM_NAV_PATHS)[number]
-  );
+  return BOTTOM_NAV_PATHS.some((basePath) => {
+    if (basePath === "/") {
+      return location.pathname === "/";
+    }
+    return (
+      location.pathname === basePath ||
+      location.pathname.startsWith(`${basePath}/`)
+    );
+  });
 }
 
 interface MyNavLinkProps {
