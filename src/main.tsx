@@ -24,10 +24,19 @@ type ViewTransitionLocationChange = {
   hashChanged: boolean;
 };
 
+const MOBILE_VIEWPORT_MEDIA_QUERY = "(max-width: 900px)";
+
 function prefersReducedMotion() {
   return (
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function isMobileViewport() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia(MOBILE_VIEWPORT_MEDIA_QUERY).matches
   );
 }
 
@@ -47,6 +56,7 @@ function resolveViewTransitionTypes({
   hrefChanged,
   hashChanged,
 }: ViewTransitionLocationChange): string[] | false {
+  if (isMobileViewport()) return false;
   if (prefersReducedMotion()) return false;
 
   const doc = document as Document & { activeViewTransition?: unknown };
@@ -63,7 +73,7 @@ function resolveViewTransitionTypes({
     if (toIndex < fromIndex) return ["back"];
   }
 
-  return ["fade"];
+  return ["forward"];
 }
 
 export const queryClient = new QueryClient();
