@@ -13,6 +13,7 @@ const DEFAULT_OVERRIDES: SafeAreaOverrides = {
 
 const listeners = new Set<() => void>();
 let storageListenerInstalled = false;
+let currentOverrides: SafeAreaOverrides = DEFAULT_OVERRIDES;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
@@ -51,6 +52,10 @@ function getStored(): SafeAreaOverrides {
   }
 }
 
+function areEqual(a: SafeAreaOverrides, b: SafeAreaOverrides) {
+  return a.topAdjust === b.topAdjust && a.bottomAdjust === b.bottomAdjust;
+}
+
 function notify() {
   for (const listener of listeners) {
     listener();
@@ -61,7 +66,10 @@ function ensureStorageListener() {
   if (storageListenerInstalled || typeof window === "undefined") return;
   window.addEventListener("storage", (event) => {
     if (event.key === STORAGE_KEY) {
-      applyToDocument(getStored());
+      const next = getStored();
+      if (areEqual(currentOverrides, next)) return;
+      currentOverrides = next;
+      applyToDocument(currentOverrides);
       notify();
     }
   });
@@ -70,11 +78,12 @@ function ensureStorageListener() {
 
 export function initializeSafeAreaOverrides() {
   if (typeof window === "undefined") return;
-  applyToDocument(getStored());
+  currentOverrides = getStored();
+  applyToDocument(currentOverrides);
 }
 
 export function getSafeAreaOverrides() {
-  return getStored();
+  return currentOverrides;
 }
 
 export function setSafeAreaOverrides(next: SafeAreaOverrides) {
@@ -85,13 +94,16 @@ export function setSafeAreaOverrides(next: SafeAreaOverrides) {
     bottomAdjust: clamp(next.bottomAdjust, -40, 80),
   };
 
+  if (areEqual(currentOverrides, sanitized)) return;
+
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
   } catch {
     // Ignore storage failures; still apply to current session.
   }
 
-  applyToDocument(sanitized);
+  currentOverrides = sanitized;
+  applyToDocument(currentOverrides);
   notify();
 }
 
@@ -114,4 +126,3 @@ export function useSafeAreaOverrides() {
     () => DEFAULT_OVERRIDES
   );
 }
-

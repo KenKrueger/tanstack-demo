@@ -11,6 +11,34 @@ export const supportsHaptic =
     ? window.matchMedia("(pointer: coarse)").matches || isLikelyIOS()
     : false;
 
+let hapticUnlocked = false;
+let unlockListenerInstalled = false;
+
+function canUseVibrateApi() {
+  if (typeof navigator === "undefined") return false;
+  const userActivation = (navigator as Navigator & {
+    userActivation?: { hasBeenActive: boolean };
+  }).userActivation;
+
+  if (userActivation && typeof userActivation.hasBeenActive === "boolean") {
+    return userActivation.hasBeenActive;
+  }
+
+  return hapticUnlocked;
+}
+
+function ensureHapticUnlockListener() {
+  if (unlockListenerInstalled || typeof window === "undefined") return;
+
+  const unlock = () => {
+    hapticUnlocked = true;
+  };
+
+  window.addEventListener("pointerdown", unlock, { once: true, passive: true });
+  window.addEventListener("keydown", unlock, { once: true, passive: true });
+  unlockListenerInstalled = true;
+}
+
 /**
  * Type guard to check if navigator supports vibrate API.
  */
@@ -27,8 +55,10 @@ function hasVibrate(
 export function haptic(pattern: number | number[] = 50) {
   try {
     if (typeof window === "undefined" || typeof document === "undefined") return;
+    ensureHapticUnlockListener();
 
     if (hasVibrate(navigator)) {
+      if (!canUseVibrateApi()) return;
       navigator.vibrate(pattern);
       return;
     }

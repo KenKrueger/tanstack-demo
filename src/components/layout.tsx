@@ -4,6 +4,7 @@ import {
   useLocation,
   useMatchRoute,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 import {
   ArrowLeftIcon,
   ArrowLeftRightIcon,
@@ -17,6 +18,8 @@ import { useTabHistoryMode } from "../lib/tab-history-mode";
 import { haptic } from "../lib/haptic";
 
 const BOTTOM_NAV_PATHS = ["/", "/move-money", "/rewards", "/profile"] as const;
+const HOME_OVERSCROLL_BG = "#2563eb";
+const DEFAULT_OVERSCROLL_BG = "#f8fafc";
 
 function useIsBottomNavPath() {
   const location = useLocation();
@@ -68,6 +71,13 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
   const mainPaddingBottom = isBottomNavPath
     ? "calc(var(--bottom-nav-height) + var(--effective-safe-area-bottom))"
     : undefined;
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const color = isHomePath ? HOME_OVERSCROLL_BG : DEFAULT_OVERSCROLL_BG;
+    document.documentElement.style.backgroundColor = color;
+    document.body.style.backgroundColor = color;
+  }, [isHomePath]);
 
   return (
     <div className="min-h-screen min-h-[100svh] bg-gradient-to-br from-slate-50 to-blue-50">
