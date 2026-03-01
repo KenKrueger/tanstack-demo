@@ -1,6 +1,5 @@
 import { AlertCircleIcon, InfoIcon } from "lucide-react";
 import React, { ReactNode } from "react";
-import { chain } from "react-aria";
 import { DialogProps, Heading } from "react-aria-components";
 import { Button } from "./Button";
 import { Dialog } from "./Dialog";
@@ -47,7 +46,10 @@ export function AlertDialog({
             <Button
               variant={variant === 'destructive' ? 'destructive' : 'primary'}
               autoFocus
-              onPress={chain(onAction, close)}>
+              onPress={() => {
+                onAction?.();
+                close();
+              }}>
               {actionLabel}
             </Button>
           </div>
