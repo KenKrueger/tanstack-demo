@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Card } from "../components/card";
 import { RouteHeroHeader } from "../components/route-hero-header";
@@ -15,6 +15,7 @@ import {
   setSafeAreaOverrides,
   useSafeAreaOverrides,
 } from "../lib/safe-area-overrides";
+import { Switch } from "../components/ui/Switch";
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePageWrapper,
@@ -152,14 +153,13 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 function ToggleRow({ label, enabled }: { label: string; enabled: boolean }) {
+  const [isSelected, setIsSelected] = useState(enabled);
   return (
     <div className="flex items-center justify-between">
       <div className="text-sm font-medium text-stone-900">{label}</div>
-      <div
-        className={`h-6 w-11 rounded-full transition-colors ${
-          enabled ? "bg-emerald-500" : "bg-stone-200"
-        }`}
-      ></div>
+      <Switch aria-label={label} isSelected={isSelected} onChange={setIsSelected}>
+        {""}
+      </Switch>
     </div>
   );
 }

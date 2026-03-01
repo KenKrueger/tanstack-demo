@@ -37,7 +37,25 @@ declare module "@tanstack/react-router" {
 
 const rootElement = document.getElementById("app")!;
 const splash = document.getElementById("splashcontainer");
-splash?.remove();
+
+// Minimum splash display time to avoid a flash
+const SPLASH_MIN_MS = 800;
+const splashStart = performance.now();
+
+function removeSplash() {
+  if (!splash) return;
+  const elapsed = performance.now() - splashStart;
+  const remaining = Math.max(0, SPLASH_MIN_MS - elapsed);
+  setTimeout(() => {
+    splash.classList.add("fade-out");
+    setTimeout(() => splash.remove(), 400);
+  }, remaining);
+}
+
+// Remove splash once the router has loaded its first route
+router.subscribe("onResolved", () => {
+  removeSplash();
+});
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
@@ -55,7 +73,7 @@ if (!rootElement.innerHTML) {
 export function Spinner() {
   return (
     <div className="fixed inset-0 flex items-center justify-center">
-      <div className="w-12 h-12 border-4 border-[#d60032] border-t-transparent rounded-full animate-spin" />
+      <div className="w-12 h-12 border-4 border-stone-300 border-t-stone-800 rounded-full animate-spin" />
     </div>
   );
 }

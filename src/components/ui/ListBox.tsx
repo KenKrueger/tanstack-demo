@@ -31,8 +31,8 @@ export const itemStyles = tv({
   base: 'group relative flex items-center gap-8 cursor-default select-none py-1.5 px-2.5 rounded-md will-change-transform text-sm forced-color-adjust-none',
   variants: {
     isSelected: {
-      false: 'text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-700 -outline-offset-2',
-      true: 'bg-blue-600 text-white forced-colors:bg-[Highlight] forced-colors:text-[HighlightText] [&:has(+[data-selected])]:rounded-b-none [&+[data-selected]]:rounded-t-none -outline-offset-4 outline-white dark:outline-white forced-colors:outline-[HighlightText]'
+      false: 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 -outline-offset-2',
+      true: 'bg-stone-800 text-white forced-colors:bg-[Highlight] forced-colors:text-[HighlightText] [&:has(+[data-selected])]:rounded-b-none [&+[data-selected]]:rounded-t-none -outline-offset-4 outline-white dark:outline-white forced-colors:outline-[HighlightText]'
     },
     isDisabled: {
       true: 'text-slate-300 dark:text-zinc-600 forced-colors:text-[GrayText]'
@@ -60,7 +60,7 @@ export const dropdownItemStyles = tv({
       true: 'text-gray-300 dark:text-zinc-600 forced-colors:text-[GrayText]'
     },
     isFocused: {
-      true: 'bg-blue-600 text-white forced-colors:bg-[Highlight] forced-colors:text-[HighlightText]'
+      true: 'bg-stone-800 text-white forced-colors:bg-[Highlight] forced-colors:text-[HighlightText]'
     }
   },
   compoundVariants: [

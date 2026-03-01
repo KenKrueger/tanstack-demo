@@ -76,14 +76,12 @@ function TransferFormReady({
   };
 
   const isPayment = mode === "payment";
-  const heading = isPayment ? "Make a Payment" : "Transfer Money";
-  const submitLabel = isPayment ? "Pay" : "Transfer";
+  const submitLabel = isPayment ? "Submit Payment" : "Transfer Funds";
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <h2 className="text-lg font-semibold mb-4">{heading}</h2>
+    <Form onSubmit={handleSubmit} className="flex flex-col gap-5">
       {errors.same && (
-        <p className="text-red-600 text-sm mb-2">{errors.same}</p>
+        <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2">{errors.same}</p>
       )}
       <Select
         label="Transfer from"
@@ -96,7 +94,7 @@ function TransferFormReady({
           </SelectItem>
         ))}
       </Select>
-      {errors.from && <p className="text-red-600 text-sm">{errors.from}</p>}
+      {errors.from && <p className="text-red-600 text-sm -mt-3">{errors.from}</p>}
       <Select
         label="Transfer to"
         placeholder="Select an account"
@@ -109,7 +107,7 @@ function TransferFormReady({
           </SelectItem>
         ))}
       </Select>
-      {errors.to && <p className="text-red-600 text-sm">{errors.to}</p>}
+      {errors.to && <p className="text-red-600 text-sm -mt-3">{errors.to}</p>}
       <TextField
         inputMode="decimal"
         label="Amount"
@@ -117,21 +115,23 @@ function TransferFormReady({
         onChange={setAmount}
       />
       {errors.amount && (
-        <p className="text-red-600 text-sm">{errors.amount}</p>
+        <p className="text-red-600 text-sm -mt-3">{errors.amount}</p>
       )}
-      <Button type="submit">{submitLabel}</Button>
+      <Button type="submit" className="mt-2 py-3 text-base font-medium rounded-xl">{submitLabel}</Button>
     </Form>
   );
 }
 
 function TransferFormSkeleton() {
   return (
-    <div className="space-y-4 animate-pulse">
-      <div className="h-6 w-32 bg-gray-200 rounded" />
-      <div className="h-10 w-full bg-gray-200 rounded" />
-      <div className="h-10 w-full bg-gray-200 rounded" />
-      <div className="h-10 w-full bg-gray-200 rounded" />
-      <div className="h-10 w-24 bg-gray-200 rounded" />
+    <div className="space-y-5 animate-pulse">
+      <div className="h-5 w-28 bg-stone-100 rounded" />
+      <div className="h-11 w-full bg-stone-100 rounded-lg" />
+      <div className="h-5 w-24 bg-stone-100 rounded" />
+      <div className="h-11 w-full bg-stone-100 rounded-lg" />
+      <div className="h-5 w-20 bg-stone-100 rounded" />
+      <div className="h-11 w-full bg-stone-100 rounded-lg" />
+      <div className="h-12 w-full bg-stone-100 rounded-xl mt-2" />
     </div>
   );
 }

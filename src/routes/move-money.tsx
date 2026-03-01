@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useMatchRoute } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { RouteHeroHeader } from "../components/route-hero-header";
 
@@ -8,6 +8,18 @@ export const Route = createFileRoute("/move-money")({
 });
 
 function RouteComponent() {
+  const matchRoute = useMatchRoute();
+  const isExactMatch = matchRoute({ to: "/move-money" });
+
+  if (!isExactMatch) {
+    // Child route is active — give it the full page
+    return (
+      <div className="max-w-2xl mx-auto p-4">
+        <Outlet />
+      </div>
+    );
+  }
+
   return (
     <>
       <RouteHeroHeader
@@ -17,9 +29,6 @@ function RouteComponent() {
       />
       <div className="max-w-4xl mx-auto p-4 space-y-8">
         <TransfersPayments />
-        <div className="max-w-2xl">
-          <Outlet />
-        </div>
       </div>
     </>
   );
