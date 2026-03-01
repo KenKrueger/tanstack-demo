@@ -76,7 +76,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
     : undefined;
 
   return (
-    <div className="min-h-screen min-h-[100svh] bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen min-h-[100svh] bg-zinc-50">
       {isHomePath && (
         <div
           aria-hidden
