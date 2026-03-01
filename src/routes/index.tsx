@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Suspense } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Account,
   accountsQueryOptions,
@@ -43,19 +43,42 @@ function IndexPage() {
             Quick Actions
           </h2>
           <div className="grid grid-cols-4 gap-2">
-            {["Transfer", "Pay Bills", "Deposit", "Investments"].map(
-              (action) => (
-                <button
-                  key={action}
-                  className="flex flex-col items-center justify-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-                >
+            {(
+              [
+                { label: "Transfer", href: "/move-money" as const },
+                { label: "Pay Bills", href: "/move-money" as const },
+                { label: "Deposit", href: null },
+                { label: "Investments", href: null },
+              ] as const
+            ).map((action) => {
+              const inner = (
+                <>
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-2">
                     <span className="text-blue-600 text-xl">+</span>
                   </div>
-                  <span className="text-xs text-gray-700">{action}</span>
+                  <span className="text-xs text-gray-700">{action.label}</span>
+                </>
+              );
+              const className =
+                "flex flex-col items-center justify-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors";
+              return action.href ? (
+                <Link
+                  key={action.label}
+                  to={action.href}
+                  className={className}
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <button
+                  key={action.label}
+                  className={className}
+                  onClick={() => alert("Coming soon!")}
+                >
+                  {inner}
                 </button>
-              )
-            )}
+              );
+            })}
           </div>
         </div>
 

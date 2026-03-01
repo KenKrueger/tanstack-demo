@@ -54,6 +54,22 @@ function ProfileContent() {
           <InfoRow label="Address" value={profile.address} />
         </Section>
       </Card>
+
+      <Card className="divide-y">
+        <Section title="Notification Preferences">
+          <ToggleRow label="Email notifications" enabled={profile.notifications.email} />
+          <ToggleRow label="Push notifications" enabled={profile.notifications.push} />
+          <ToggleRow label="SMS notifications" enabled={profile.notifications.sms} />
+        </Section>
+      </Card>
+
+      <Card className="divide-y">
+        <Section title="Security">
+          <InfoRow label="Last login" value="March 15, 2024" />
+          <InfoRow label="Two-factor auth" value="Enabled" />
+          <InfoRow label="Member since" value="2022" />
+        </Section>
+      </Card>
     </div>
   );
 }

@@ -119,7 +119,13 @@ function AccountDetailsPage() {
               </Button>
               <Modal>
                 <Dialog>
-                  <TransferForm accountId={accountId} />
+                  {({ close }) => (
+                    <TransferForm
+                      accountId={accountId}
+                      mode={isCredit ? "payment" : "transfer"}
+                      onClose={close}
+                    />
+                  )}
                 </Dialog>
               </Modal>
             </DialogTrigger>

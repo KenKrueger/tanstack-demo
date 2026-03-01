@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": ".agents/hooks/enforce-cli.sh",
+        "timeout": 10
+      }
+    ]
+  }
+}

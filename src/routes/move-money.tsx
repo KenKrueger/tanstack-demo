@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { PageHeader } from "../components/page-header";
 
@@ -8,7 +8,12 @@ export const Route = createFileRoute("/move-money")({
 });
 
 function RouteComponent() {
-  return <TransfersPayments />;
+  return (
+    <>
+      <TransfersPayments />
+      <Outlet />
+    </>
+  );
 }
 
 function TransfersPayments() {
@@ -18,7 +23,7 @@ function TransfersPayments() {
       <div className="max-w-4xl mx-auto p-4 space-y-8">
         <MenuSection title="Your Accounts">
           <MenuItem
-            href="transferspayments/transfer"
+            href="/move-money/transfer"
             title="Make a Transfer"
             subtitle="Move money between your accounts."
           />
@@ -81,10 +86,10 @@ function MenuItem({
 }) {
   return (
     <li className="flex flex-row justify-between items-center border-b border-gray-200 p-4">
-      <a href={href} className="no-underline text-inherit">
+      <Link to={href as any} className="no-underline text-inherit">
         <div className="font-semibold">{title}</div>
         <div className="text-sm text-gray-500">{subtitle}</div>
-      </a>
+      </Link>
       <ChevronRight aria-hidden className="text-blue-400" />
     </li>
   );
