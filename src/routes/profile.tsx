@@ -10,6 +10,11 @@ import {
   useTabHistoryMode,
 } from "../lib/tab-history-mode";
 import { haptic } from "../lib/haptic";
+import {
+  resetSafeAreaOverrides,
+  setSafeAreaOverrides,
+  useSafeAreaOverrides,
+} from "../lib/safe-area-overrides";
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePageWrapper,
@@ -82,6 +87,8 @@ function ProfileContent() {
           <TabHistoryModeRow />
         </Section>
       </Card>
+
+      <SafeAreaTunerPanel />
     </div>
   );
 }
@@ -210,5 +217,81 @@ function ModeButton({
     >
       {label}
     </button>
+  );
+}
+
+function SafeAreaTunerPanel() {
+  const overrides = useSafeAreaOverrides();
+
+  return (
+    <div className="sticky z-[5] bottom-[calc(var(--bottom-nav-height)+var(--effective-safe-area-bottom)+0.5rem)]">
+      <Card className="p-3 border border-blue-100 bg-white/95 backdrop-blur">
+        <div className="text-sm font-semibold text-zinc-900 mb-2">
+          Safe Area Tuner
+        </div>
+        <div className="space-y-3">
+          <TunerRow
+            label="Top inset adjust"
+            value={overrides.topAdjust}
+            onChange={(value) =>
+              setSafeAreaOverrides({
+                ...overrides,
+                topAdjust: value,
+              })
+            }
+          />
+          <TunerRow
+            label="Bottom inset adjust"
+            value={overrides.bottomAdjust}
+            onChange={(value) =>
+              setSafeAreaOverrides({
+                ...overrides,
+                bottomAdjust: value,
+              })
+            }
+          />
+        </div>
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            className="touch-control rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+            onClick={() => {
+              haptic(30);
+              resetSafeAreaOverrides();
+            }}
+          >
+            Reset
+          </button>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+function TunerRow({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  return (
+    <label className="block">
+      <div className="mb-1 flex items-center justify-between text-xs text-zinc-700">
+        <span>{label}</span>
+        <span className="font-semibold tabular-nums">{value}px</span>
+      </div>
+      <input
+        type="range"
+        className="w-full accent-blue-600"
+        min={-40}
+        max={80}
+        step={1}
+        value={value}
+        onChange={(event) => onChange(Number(event.currentTarget.value))}
+      />
+    </label>
   );
 }

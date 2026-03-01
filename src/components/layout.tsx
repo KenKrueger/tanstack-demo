@@ -50,8 +50,8 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
           : "text-gray-400 hover:text-gray-600"
       }`}
     >
-      <Icon aria-hidden size={24} />
-      <span className="text-xs font-medium">{label}</span>
+      <Icon aria-hidden size={22} />
+      <span className="text-[11px] font-medium leading-none">{label}</span>
     </WrappedLink>
   );
 }
@@ -59,7 +59,9 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
 export function RootLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const canGoBack = useCanGoBack();
+  const location = useLocation();
   const isBottomNavPath = useIsBottomNavPath();
+  const isHomePath = location.pathname === "/";
   const showBackButton = canGoBack && !isBottomNavPath;
   const tabHistoryMode = useTabHistoryMode();
   const replaceTabHistory = tabHistoryMode === "native";
@@ -69,11 +71,17 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen min-h-[100svh] bg-gradient-to-br from-slate-50 to-blue-50">
+      {isHomePath && (
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-x-0 top-0 z-[5] h-[var(--effective-safe-area-top)] bg-gradient-to-r from-blue-600 to-indigo-700"
+        />
+      )}
       {showBackButton && (
         <Button
           onPress={() => router.history.back()}
           onPressStart={() => haptic(40)}
-          className="fixed left-4 top-[calc(var(--safe-area-top)+1rem)] z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-blue-700 hover:text-blue-800 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="fixed left-4 top-[calc(var(--effective-safe-area-top)+1rem)] z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-blue-700 hover:text-blue-800 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <ArrowLeftIcon className="h-5 w-5" aria-hidden />
           <span className="sr-only">Back</span>

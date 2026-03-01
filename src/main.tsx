@@ -7,9 +7,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 import { CriticalErrorFallback } from "./critical-error-fallback";
 import { installSafeAreaBridge } from "./lib/safe-area-bridge";
+import { initializeSafeAreaOverrides } from "./lib/safe-area-overrides";
 
 export const queryClient = new QueryClient();
 installSafeAreaBridge();
+initializeSafeAreaOverrides();
 
 // Set up a Router instance
 const router = createRouter({

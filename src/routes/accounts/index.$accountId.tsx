@@ -41,7 +41,7 @@ function AccountDetailsPage() {
             : account.type === "SAVINGS"
             ? "from-emerald-600 to-emerald-800"
             : "from-purple-600 to-indigo-800"
-        } text-white p-6 pb-20 pt-[calc(var(--safe-area-top)+3rem)]`}
+        } text-white p-6 pb-20 pt-[calc(var(--effective-safe-area-top)+3rem)]`}
       >
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold mb-2">{account.displayName}</h1>
