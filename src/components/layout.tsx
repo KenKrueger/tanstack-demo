@@ -15,7 +15,7 @@ import { Button } from "react-aria-components";
 import { WrappedLink } from "./wrapped-link";
 import { useTabHistoryMode } from "../lib/tab-history-mode";
 import { haptic } from "../lib/haptic";
-import { MAIN_NAV_THEMES, getMainNavPathname } from "../lib/main-nav-themes";
+import { getMainNavPathname } from "../lib/main-nav-themes";
 
 function useIsBottomNavPath() {
   const location = useLocation();
@@ -43,12 +43,15 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
       aria-current={isActive ? "page" : undefined}
       className={`touch-control [-webkit-user-drag:none] flex min-h-11 min-w-11 flex-1 flex-col items-center justify-center gap-1 rounded-xl p-2 transition-all duration-200 ${
         isActive
-          ? "text-blue-600 scale-105"
-          : "text-gray-400 hover:text-gray-600"
+          ? "text-stone-900 scale-105"
+          : "text-stone-400 hover:text-stone-600"
       }`}
     >
       <Icon aria-hidden size={22} />
       <span className="text-[11px] font-medium leading-none">{label}</span>
+      {isActive && (
+        <div className="w-1 h-1 rounded-full bg-stone-800 mt-0.5" />
+      )}
     </WrappedLink>
   );
 }
@@ -56,9 +59,6 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
 export function RootLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const canGoBack = useCanGoBack();
-  const location = useLocation();
-  const mainNavPathname = getMainNavPathname(location.pathname);
-  const mainNavTheme = mainNavPathname ? MAIN_NAV_THEMES[mainNavPathname] : null;
   const isBottomNavPath = useIsBottomNavPath();
   const showBackButton = canGoBack && !isBottomNavPath;
   const tabHistoryMode = useTabHistoryMode();
@@ -68,18 +68,16 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
     : undefined;
 
   return (
-    <div className="min-h-screen min-h-[100svh] bg-zinc-50">
-      {mainNavTheme && (
-        <div
-          aria-hidden
-          className={`pointer-events-none fixed inset-x-0 top-0 z-[5] h-[var(--effective-safe-area-top)] bg-gradient-to-r ${mainNavTheme.gradientClassName}`}
-        />
-      )}
+    <div className="min-h-screen min-h-[100svh] bg-[#FAF7F2]">
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-x-0 top-0 z-[5] h-[var(--effective-safe-area-top)] bg-[#FAF7F2]"
+      />
       {showBackButton && (
         <Button
           onPress={() => router.history.back()}
           onPressStart={() => haptic(40)}
-          className="fixed left-4 top-[calc(var(--effective-safe-area-top)+1rem)] z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-blue-700 hover:text-blue-800 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="fixed left-4 top-[calc(var(--effective-safe-area-top)+1rem)] z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-stone-700 hover:text-stone-900 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
         >
           <ArrowLeftIcon className="h-5 w-5" aria-hidden />
           <span className="sr-only">Back</span>
@@ -91,7 +89,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
 
       {isBottomNavPath && (
         <nav aria-label="Primary" className="fixed bottom-0 inset-x-0 z-10">
-          <div className="border-t border-gray-100 bg-white/80 px-2 pb-[var(--effective-safe-area-bottom)] shadow-lg backdrop-blur-lg">
+          <div className="border-t border-stone-200/60 bg-white/85 px-2 pb-[var(--effective-safe-area-bottom)] shadow-lg backdrop-blur-xl">
             <div className="mx-auto flex min-h-[var(--bottom-nav-height)] max-w-md items-center">
               <MyNavLink to="/" icon={HomeIcon} label="Home" replace={replaceTabHistory} />
               <MyNavLink

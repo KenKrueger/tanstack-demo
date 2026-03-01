@@ -6,39 +6,59 @@ export function CreditScore() {
   const { data: creditScore } = useSuspenseQuery(creditScoreQueryOptions);
 
   const getScoreCategory = (score: number) => {
-    if (score >= 800) return { label: "Exceptional", color: "emerald" };
-    if (score >= 740) return { label: "Excellent", color: "green" };
-    if (score >= 670) return { label: "Good", color: "blue" };
-    if (score >= 580) return { label: "Fair", color: "yellow" };
-    return { label: "Poor", color: "red" };
+    if (score >= 800) return { label: "Exceptional", color: "#059669" };
+    if (score >= 740) return { label: "Excellent", color: "#16a34a" };
+    if (score >= 670) return { label: "Good", color: "#0d9488" };
+    if (score >= 580) return { label: "Fair", color: "#d97706" };
+    return { label: "Poor", color: "#dc2626" };
   };
 
   const { label, color } = getScoreCategory(creditScore.score);
 
+  // Calculate percentage for the arc
+  const min = creditScore.scoreRange.min;
+  const max = creditScore.scoreRange.max;
+  const pct = ((creditScore.score - min) / (max - min)) * 100;
+
   return (
-    <Card>
+    <Card className="p-5">
       <div className="flex flex-col items-center">
-        <div className="text-gray-600 text-sm mb-1 min-h-[16px]">
+        <div className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-3">
           FICO® Score
         </div>
-        <div className="relative flex items-center justify-center w-24 h-24">
-          <div
-            className={`absolute inset-0 bg-${color}-100 rounded-full animate-pulse opacity-20`}
-          ></div>
-          <div className={`text-3xl font-bold text-${color}-600`}>
+        <div className="relative flex items-center justify-center w-28 h-28">
+          {/* Score ring */}
+          <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+            <circle
+              cx="50" cy="50" r="42"
+              fill="none"
+              stroke="#F5F0EB"
+              strokeWidth="6"
+            />
+            <circle
+              cx="50" cy="50" r="42"
+              fill="none"
+              stroke={color}
+              strokeWidth="6"
+              strokeLinecap="round"
+              strokeDasharray={`${pct * 2.64} 264`}
+            />
+          </svg>
+          <div className="text-3xl font-bold font-display" style={{ color }}>
             {creditScore.score}
           </div>
         </div>
         <div
-          className={`mt-1 text-xs text-${color}-600 font-medium min-h-[14px]`}
+          className="mt-2 text-xs font-semibold tracking-wide uppercase"
+          style={{ color }}
         >
           {label}
         </div>
-        <div className="w-full flex justify-between text-xs text-gray-400 mt-2">
+        <div className="w-full flex justify-between text-[10px] text-stone-400 mt-3 px-4">
           <span>{creditScore.scoreRange.min}</span>
           <span>{creditScore.scoreRange.max}</span>
         </div>
-        <div className="text-[10px] text-gray-400 mt-1 min-h-[12px]">
+        <div className="text-[10px] text-stone-400 mt-1">
           Updated {new Date(creditScore.lastUpdated).toLocaleDateString()}
         </div>
       </div>

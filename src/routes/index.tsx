@@ -10,7 +10,12 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { CreditScore, CreditScoreSkeleton } from "../components/credit-score";
 import { Card } from "../components/card";
 import { WrappedLink } from "../components/wrapped-link";
-import { RouteHeroHeader } from "../components/route-hero-header";
+import {
+  ArrowLeftRightIcon,
+  ReceiptTextIcon,
+  LandmarkIcon,
+  TrendingUpIcon,
+} from "lucide-react";
 
 export const Route = createFileRoute("/")({
   loader: (opts) => {
@@ -30,36 +35,64 @@ export const Route = createFileRoute("/")({
 function IndexPage() {
   return (
     <>
-      <RouteHeroHeader
-        title="Welcome back, Sarah"
-        subtitle="Your financial summary"
-        theme="home"
-      />
+      <header className="mx-auto w-full max-w-4xl px-4 pt-[calc(var(--effective-safe-area-top)+1.25rem)] pb-1 sm:px-6">
+        <p className="text-sm text-stone-400 mb-0.5">Good afternoon,</p>
+        <h1 className="text-[1.75rem] font-bold tracking-tight text-stone-900 font-display leading-tight">Sarah</h1>
+      </header>
 
-      <div className="mx-auto -mt-5 w-full max-w-4xl px-4 pb-4">
-        <div className="bg-white rounded-xl shadow-lg p-4 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+      <div className="mx-auto w-full max-w-4xl px-4 pt-4 pb-4">
+        <div className="bg-white rounded-2xl card-shadow p-4 mb-6">
+          <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wider mb-3">
             Quick Actions
           </h2>
           <div className="grid grid-cols-4 gap-2">
             {(
               [
-                { label: "Transfer", href: "/move-money" as const },
-                { label: "Pay Bills", href: "/move-money" as const },
-                { label: "Deposit", href: null },
-                { label: "Investments", href: null },
+                {
+                  label: "Transfer",
+                  href: "/move-money" as const,
+                  icon: ArrowLeftRightIcon,
+                  bg: "bg-emerald-50",
+                  iconColor: "text-emerald-700",
+                },
+                {
+                  label: "Pay Bills",
+                  href: "/move-money" as const,
+                  icon: ReceiptTextIcon,
+                  bg: "bg-amber-50",
+                  iconColor: "text-amber-700",
+                },
+                {
+                  label: "Deposit",
+                  href: null,
+                  icon: LandmarkIcon,
+                  bg: "bg-sky-50",
+                  iconColor: "text-sky-700",
+                },
+                {
+                  label: "Invest",
+                  href: null,
+                  icon: TrendingUpIcon,
+                  bg: "bg-violet-50",
+                  iconColor: "text-violet-700",
+                },
               ] as const
             ).map((action) => {
+              const Icon = action.icon;
               const inner = (
                 <>
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-2">
-                    <span className="text-blue-600 text-xl">+</span>
+                  <div
+                    className={`w-11 h-11 rounded-xl ${action.bg} flex items-center justify-center mb-1.5`}
+                  >
+                    <Icon className={`w-5 h-5 ${action.iconColor}`} />
                   </div>
-                  <span className="text-xs text-gray-700">{action.label}</span>
+                  <span className="text-xs font-medium text-stone-600">
+                    {action.label}
+                  </span>
                 </>
               );
               const className =
-                "flex flex-col items-center justify-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors";
+                "flex flex-col items-center justify-center p-2 rounded-xl hover:bg-stone-50 transition-colors";
               return action.href ? (
                 <Link
                   key={action.label}
@@ -81,7 +114,7 @@ function IndexPage() {
           </div>
         </div>
 
-        <h2 className="text-lg font-semibold text-gray-800 mb-3">
+        <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wider mb-3">
           Your Accounts
         </h2>
         <Suspense fallback={<AccountsSkeleton />}>
@@ -89,7 +122,7 @@ function IndexPage() {
         </Suspense>
 
         <div className="mt-8">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+          <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wider mb-3">
             Financial Health
           </h2>
           <Suspense fallback={<CreditScoreSkeleton />}>
@@ -113,38 +146,57 @@ function AccountsContent() {
 }
 
 function AccountCard({ account }: { account: Account }) {
-  const getAccountIcon = (type: Account["type"]) => {
+  const getAccountStyle = (type: Account["type"]) => {
     switch (type) {
       case "CHECKING":
-        return "💰";
+        return { icon: "💰", accent: "bg-emerald-600" };
       case "SAVINGS":
-        return "🏦";
+        return { icon: "🏦", accent: "bg-amber-500" };
       case "CREDIT":
-        return "💳";
+        return { icon: "💳", accent: "bg-violet-600" };
     }
   };
+
+  const style = getAccountStyle(account.type);
 
   return (
     <WrappedLink
       to="/accounts/index/$accountId"
       params={{ accountId: account.id }}
     >
-      <Card className="p-4 active:bg-gray-100 transition-colors duration-150">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-xl">{getAccountIcon(account.type)}</span>
-          <div className="font-medium text-zinc-900">{account.displayName}</div>
-        </div>
-        <div className="text-2xl font-semibold text-zinc-900">
-          $
-          {account.balance.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-          })}
-        </div>
-        {account.type === "CREDIT" && (
-          <div className="text-sm text-zinc-500 mt-1">
-            ${account.availableCredit.toLocaleString()} available
+      <Card className="p-4 active:scale-[0.98] transition-all duration-150 relative overflow-hidden">
+        <div
+          className={`absolute left-0 top-0 bottom-0 w-1 ${style.accent} rounded-l`}
+        />
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-lg">{style.icon}</span>
+              <div className="font-medium text-stone-800 text-sm">
+                {account.displayName}
+              </div>
+            </div>
+            <div className="text-2xl font-semibold text-stone-900 font-display">
+              $
+              {account.balance.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
+            </div>
+            {account.type === "CREDIT" && (
+              <div className="text-xs text-stone-500 mt-1">
+                ${account.availableCredit.toLocaleString()} available
+              </div>
+            )}
           </div>
-        )}
+          <div className="text-stone-300">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fillRule="evenodd"
+                d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+              />
+            </svg>
+          </div>
+        </div>
       </Card>
     </WrappedLink>
   );

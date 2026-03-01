@@ -53,16 +53,16 @@ function RewardsPage() {
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-2xl font-bold text-zinc-900">
+              <h2 className="text-2xl font-bold text-stone-900 font-display">
                 {mockRewards.creditCardPoints.toLocaleString()}
               </h2>
-              <div className="text-sm text-zinc-500">Available Points</div>
+              <div className="text-sm text-stone-500">Available Points</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-2xl font-bold text-emerald-700 font-display">
                 ${mockRewards.cashBackEarned.toFixed(2)}
               </div>
-              <div className="text-sm text-zinc-500">Cash Back Earned</div>
+              <div className="text-sm text-stone-500">Cash Back Earned</div>
             </div>
           </div>
         </Card>
@@ -70,17 +70,17 @@ function RewardsPage() {
         <div className="grid md:grid-cols-2 gap-6">
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <TagIcon className="w-5 h-5 text-blue-500" />
-              <h2 className="text-lg font-semibold">Current Offers</h2>
+              <TagIcon className="w-5 h-5 text-amber-600" />
+              <h2 className="text-lg font-semibold text-stone-800">Current Offers</h2>
             </div>
             <div className="space-y-4">
               {mockRewards.offers.map((offer, i) => (
-                <div key={i} className="border-b pb-4 last:border-0 last:pb-0">
-                  <div className="font-medium">{offer.title}</div>
-                  <div className="text-sm text-zinc-500">
+                <div key={i} className="border-b border-stone-100 pb-4 last:border-0 last:pb-0">
+                  <div className="font-medium text-stone-800">{offer.title}</div>
+                  <div className="text-sm text-stone-500">
                     {offer.description}
                   </div>
-                  <div className="text-xs text-zinc-400 mt-1">
+                  <div className="text-xs text-stone-400 mt-1">
                     Expires {offer.expires}
                   </div>
                 </div>
@@ -90,14 +90,14 @@ function RewardsPage() {
 
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <UserIcon className="w-5 h-5 text-blue-500" />
-              <h2 className="text-lg font-semibold">Member Benefits</h2>
+              <UserIcon className="w-5 h-5 text-amber-600" />
+              <h2 className="text-lg font-semibold text-stone-800">Member Benefits</h2>
             </div>
             <div className="space-y-4">
               {mockRewards.memberPerks.map((perk, i) => (
-                <div key={i} className="border-b pb-4 last:border-0 last:pb-0">
-                  <div className="font-medium">{perk.title}</div>
-                  <div className="text-sm text-zinc-500">
+                <div key={i} className="border-b border-stone-100 pb-4 last:border-0 last:pb-0">
+                  <div className="font-medium text-stone-800">{perk.title}</div>
+                  <div className="text-sm text-stone-500">
                     {perk.description}
                   </div>
                 </div>
@@ -108,15 +108,15 @@ function RewardsPage() {
 
         <Card className="p-6">
           <div className="flex items-center gap-2 mb-4">
-            <CreditCardIcon className="w-5 h-5 text-blue-500" />
-            <h2 className="text-lg font-semibold">Recent Activity</h2>
+              <CreditCardIcon className="w-5 h-5 text-amber-600" />
+              <h2 className="text-lg font-semibold text-stone-800">Recent Activity</h2>
           </div>
           <div className="divide-y">
             {mockRewards.recentActivity.map((activity, i) => (
               <div key={i} className="py-3 flex justify-between items-center">
                 <div>
-                  <div className="font-medium">{activity.description}</div>
-                  <div className="text-sm text-zinc-500">
+                  <div className="font-medium text-stone-800">{activity.description}</div>
+                  <div className="text-sm text-stone-500">
                     {new Date(activity.date).toLocaleDateString()}
                   </div>
                 </div>

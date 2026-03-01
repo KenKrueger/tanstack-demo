@@ -1,8 +1,8 @@
 export const MAIN_NAV_GRADIENT_BY_THEME = {
-  home: "from-blue-600 to-indigo-700",
-  moveMoney: "from-teal-700 to-cyan-800",
-  rewards: "from-emerald-600 to-emerald-700",
-  profile: "from-slate-600 to-slate-700",
+  home: "from-stone-900 via-stone-800 to-emerald-950",
+  moveMoney: "from-teal-950 to-cyan-950",
+  rewards: "from-amber-950 via-amber-900 to-yellow-950",
+  profile: "from-stone-900 to-stone-950",
 } as const;
 
 export type MainNavThemeName = keyof typeof MAIN_NAV_GRADIENT_BY_THEME;

@@ -50,14 +50,14 @@ function ProfileContent() {
     <div className="space-y-6">
       <Card className="p-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-2xl font-semibold">
+          <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-700 text-2xl font-semibold font-display">
             {profile.name.charAt(0)}
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-zinc-900">
+            <h2 className="text-xl font-semibold text-stone-900">
               {profile.name}
             </h2>
-            <p className="text-sm text-zinc-500">Member since 2022</p>
+            <p className="text-sm text-stone-500">Member since 2022</p>
           </div>
         </div>
       </Card>
@@ -136,7 +136,7 @@ function Section({
 }) {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-semibold text-zinc-900 mb-4">{title}</h3>
+      <h3 className="text-lg font-semibold text-stone-900 mb-4">{title}</h3>
       <div className="space-y-4">{children}</div>
     </div>
   );
@@ -145,8 +145,8 @@ function Section({
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center">
-      <div className="text-sm text-zinc-500">{label}</div>
-      <div className="text-sm font-medium text-zinc-900">{value}</div>
+      <div className="text-sm text-stone-500">{label}</div>
+      <div className="text-sm font-medium text-stone-900">{value}</div>
     </div>
   );
 }
@@ -154,10 +154,10 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 function ToggleRow({ label, enabled }: { label: string; enabled: boolean }) {
   return (
     <div className="flex items-center justify-between">
-      <div className="text-sm font-medium text-zinc-900">{label}</div>
+      <div className="text-sm font-medium text-stone-900">{label}</div>
       <div
         className={`h-6 w-11 rounded-full transition-colors ${
-          enabled ? "bg-green-500" : "bg-zinc-200"
+          enabled ? "bg-emerald-500" : "bg-stone-200"
         }`}
       ></div>
     </div>
@@ -169,12 +169,12 @@ function TabHistoryModeRow() {
 
   return (
     <div className="space-y-2">
-      <div className="text-sm font-medium text-zinc-900">Bottom tab back behavior</div>
-      <p className="text-xs text-zinc-500">
+      <div className="text-sm font-medium text-stone-900">Bottom tab back behavior</div>
+      <p className="text-xs text-stone-500">
         Native mode keeps tab switches out of browser history. Web mode includes tab
         switches in history.
       </p>
-      <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-50 p-1">
+      <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50 p-1">
         <ModeButton
           mode="native"
           currentMode={tabHistoryMode}
@@ -215,8 +215,8 @@ function ModeButton({
       }}
       className={`touch-control rounded-md px-3 py-2 text-sm font-medium transition-colors ${
         selected
-          ? "bg-blue-600 text-white shadow-sm"
-          : "bg-transparent text-zinc-700 hover:bg-zinc-100"
+          ? "bg-stone-800 text-white shadow-sm"
+          : "bg-transparent text-stone-700 hover:bg-stone-100"
       }`}
     >
       {label}
@@ -229,8 +229,8 @@ function SafeAreaTunerPanel() {
 
   return (
     <div className="sticky z-[5] bottom-[calc(var(--bottom-nav-height)+var(--effective-safe-area-bottom)+0.5rem)]">
-      <Card className="p-3 border border-blue-100 bg-white/95 backdrop-blur">
-        <div className="text-sm font-semibold text-zinc-900 mb-2">
+      <Card className="p-3 border border-amber-100 bg-white/95 backdrop-blur">
+        <div className="text-sm font-semibold text-stone-900 mb-2">
           Safe Area Tuner
         </div>
         <div className="space-y-3">
@@ -258,7 +258,7 @@ function SafeAreaTunerPanel() {
         <div className="mt-3 flex justify-end">
           <button
             type="button"
-            className="touch-control rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+            className="touch-control rounded-md border border-stone-200 px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50"
             onClick={() => {
               haptic(30);
               resetSafeAreaOverrides();
@@ -283,13 +283,13 @@ function TunerRow({
 }) {
   return (
     <label className="block">
-      <div className="mb-1 flex items-center justify-between text-xs text-zinc-700">
+      <div className="mb-1 flex items-center justify-between text-xs text-stone-700">
         <span>{label}</span>
         <span className="font-semibold tabular-nums">{value}px</span>
       </div>
       <input
         type="range"
-        className="w-full accent-blue-600"
+        className="w-full accent-stone-800"
         min={-40}
         max={80}
         step={1}

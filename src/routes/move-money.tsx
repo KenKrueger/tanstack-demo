@@ -68,8 +68,8 @@ function MenuSection({
 }) {
   return (
     <div>
-      <h2 className="pb-2 text-sm font-medium text-gray-600">{title}</h2>
-      <ul className="mb-4 border border-gray-200 bg-white rounded">
+      <h2 className="pb-2 text-xs font-semibold text-stone-500 uppercase tracking-wider">{title}</h2>
+      <ul className="mb-4 border border-stone-200/60 bg-white rounded-2xl card-shadow overflow-hidden">
         {children}
       </ul>
     </div>
@@ -86,22 +86,22 @@ function MenuItem({
   to?: string;
 }) {
   return (
-    <li className="flex flex-row justify-between items-center border-b border-gray-200 p-4">
+    <li className="flex flex-row justify-between items-center border-b border-stone-100 p-4 last:border-b-0">
       {to ? (
         <>
           <Link to={to as any} resetScroll={false} className="no-underline text-inherit flex-1">
-            <div className="font-semibold">{title}</div>
-            <div className="text-sm text-gray-500">{subtitle}</div>
+            <div className="font-semibold text-stone-800">{title}</div>
+            <div className="text-sm text-stone-500">{subtitle}</div>
           </Link>
-          <ChevronRight aria-hidden className="text-blue-400" />
+          <ChevronRight aria-hidden className="text-stone-400" />
         </>
       ) : (
         <>
           <div className="text-inherit flex-1">
-            <div className="font-semibold">{title}</div>
-            <div className="text-sm text-gray-500">{subtitle}</div>
+            <div className="font-semibold text-stone-800">{title}</div>
+            <div className="text-sm text-stone-500">{subtitle}</div>
           </div>
-          <ChevronRight aria-hidden className="text-gray-300" />
+          <ChevronRight aria-hidden className="text-stone-300" />
         </>
       )}
     </li>

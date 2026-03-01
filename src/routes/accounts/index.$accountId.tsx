@@ -33,41 +33,33 @@ function AccountDetailsPage() {
   if (!account) return <div>Account not found</div>;
 
   return (
-    <div className="min-h-screen">
-      <div
-        className={`bg-gradient-to-r ${
-          account.type === "CHECKING"
-            ? "from-blue-600 to-blue-800"
-            : account.type === "SAVINGS"
-            ? "from-emerald-600 to-emerald-800"
-            : "from-purple-600 to-indigo-800"
-        } text-white p-6 pb-20 pt-[calc(var(--effective-safe-area-top)+3rem)]`}
-      >
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold mb-2">{account.displayName}</h1>
-          <p className="text-sm opacity-80">{account.accountNumber}</p>
-          <div className="mt-6">
-            <p className="text-sm opacity-80">
-              {isCredit ? "Current Balance" : "Available Balance"}
-            </p>
-            <p className="text-4xl font-bold">
-              $
-              {(isCredit
-                ? account.balance
-                : account.availableBalance
-              ).toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-              })}
-            </p>
-          </div>
+    <div className="min-h-screen bg-[#FAF7F2]">
+      <div className="max-w-4xl mx-auto px-4 pt-[calc(var(--effective-safe-area-top)+1.25rem)] pb-2 sm:px-6">
+        <h1 className="text-[1.75rem] font-bold tracking-tight text-stone-900 font-display leading-tight pl-12">
+          {account.displayName}
+        </h1>
+        <p className="mt-1 text-sm text-stone-400 pl-12">{account.accountNumber}</p>
+        <div className="mt-4">
+          <p className="text-xs text-stone-400 uppercase tracking-wider font-medium">
+            {isCredit ? "Current Balance" : "Available Balance"}
+          </p>
+          <p className="text-4xl font-bold font-display text-stone-900 mt-1">
+            $
+            {(isCredit
+              ? account.balance
+              : account.availableBalance
+            ).toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+            })}
+          </p>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto -mt-12 px-4">
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <div className="max-w-4xl mx-auto px-4 pt-4">
+        <div className="bg-white rounded-2xl card-shadow p-6 mb-6">
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-stone-500">
                 {isCredit ? "Available Credit" : "Current Balance"}
               </p>
               <p className="text-xl font-semibold">
@@ -82,7 +74,7 @@ function AccountDetailsPage() {
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-stone-500">
                 {isCredit ? "Credit Limit" : "Routing Number"}
               </p>
               <p className="text-xl font-semibold">
@@ -97,13 +89,13 @@ function AccountDetailsPage() {
             {isCredit && (
               <>
                 <div>
-                  <p className="text-sm text-gray-500">Due Date</p>
+                  <p className="text-sm text-stone-500">Due Date</p>
                   <p className="text-xl font-semibold">
                     <DateFormatter date={account.dueDate} />
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Minimum Payment</p>
+                  <p className="text-sm text-stone-500">Minimum Payment</p>
                   <p className="text-xl font-semibold">
                     ${account.minimumPayment}
                   </p>
@@ -136,15 +128,15 @@ function AccountDetailsPage() {
           </div>
         </div>
 
-        <h2 className="text-xl font-semibold mb-4">Recent Transactions</h2>
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div className="divide-y">
+        <h2 className="text-lg font-semibold text-stone-800 mb-4">Recent Transactions</h2>
+        <div className="bg-white rounded-2xl card-shadow overflow-hidden">
+          <div className="divide-y divide-stone-100">
             {account.transactions?.slice(0, 10).map((tx, i) => (
-              <div key={i} className="p-4 hover:bg-gray-50">
+              <div key={i} className="p-4 hover:bg-stone-50">
                 <div className="flex justify-between">
                   <div>
-                    <p className="font-medium">{tx.description}</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="font-medium text-stone-800">{tx.description}</p>
+                    <p className="text-sm text-stone-500">
                       <DateFormatter date={tx.date} />
                     </p>
                   </div>
