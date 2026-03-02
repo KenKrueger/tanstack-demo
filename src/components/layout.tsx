@@ -1,6 +1,5 @@
 import {
   useRouter,
-  useCanGoBack,
   useLocation,
   useMatchRoute,
 } from "@tanstack/react-router";
@@ -17,6 +16,7 @@ import { useTabHistoryMode } from "../lib/tab-history-mode";
 import { haptic } from "../lib/haptic";
 import { getMainNavPathname } from "../lib/main-nav-themes";
 import { requestProgrammaticPopTransitionOverride } from "../lib/view-transition-overrides";
+import { useRef } from "react";
 
 interface MyNavLinkProps {
   to: string;
@@ -28,12 +28,29 @@ interface MyNavLinkProps {
 function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
   const matchRoute = useMatchRoute();
   const isActive = matchRoute({ to });
+  const lastHomeTapMs = useRef(0);
+
+  const handlePress = () => {
+    if (to !== "/" || !isActive) return;
+
+    const now = Date.now();
+    if (now - lastHomeTapMs.current <= 350) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      haptic(20);
+      lastHomeTapMs.current = 0;
+      return;
+    }
+
+    lastHomeTapMs.current = now;
+  };
 
   return (
     <WrappedLink
       preload="viewport"
       to={to}
       replace={replace}
+      viewTransition={false}
+      onPress={handlePress}
       onPressStart={() => haptic(40)}
       onContextMenu={(event) => event.preventDefault()}
       aria-current={isActive ? "page" : undefined}
@@ -55,7 +72,13 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
 export function RootLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const location = useLocation();
-  const canGoBack = useCanGoBack();
+  const locationHistoryIndex =
+    typeof location.state === "object" &&
+    location.state !== null &&
+    typeof (location.state as { __TSR_index?: unknown }).__TSR_index === "number"
+      ? (location.state as { __TSR_index: number }).__TSR_index
+      : 0;
+  const canGoBack = locationHistoryIndex > 0;
   const isBottomNavPath = getMainNavPathname(location.pathname) !== null;
   const isAccountDetailsPath = location.pathname.startsWith("/accounts/index/");
   const showBackButton = canGoBack && !isBottomNavPath;

@@ -9,6 +9,7 @@ import { CriticalErrorFallback } from "./critical-error-fallback";
 import { installSafeAreaBridge } from "./lib/safe-area-bridge";
 import { initializeSafeAreaOverrides } from "./lib/safe-area-overrides";
 import { consumeProgrammaticPopTransitionOverride } from "./lib/view-transition-overrides";
+import { getMainNavPathname } from "./lib/main-nav-themes";
 
 type LocationWithHistoryIndex = {
   pathname: string;
@@ -81,6 +82,18 @@ function resolveViewTransitionTypes({
 
   if (!pathChanged) return false;
   if (!fromLocation) return false;
+
+  const fromMainNavPathname = getMainNavPathname(fromLocation.pathname);
+  const toMainNavPathname = getMainNavPathname(toLocation.pathname);
+
+  // Bottom-tab switches should feel instant with no page transition.
+  if (
+    fromMainNavPathname &&
+    toMainNavPathname &&
+    fromMainNavPathname !== toMainNavPathname
+  ) {
+    return false;
+  }
 
   const fromIndex = getHistoryIndex(fromLocation);
   const toIndex = getHistoryIndex(toLocation);
