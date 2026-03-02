@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-export const DEFAULT_VIEW_TRANSITIONS_ENABLED = true;
+export const DEFAULT_VIEW_TRANSITIONS_ENABLED = false;
 export const VIEW_TRANSITIONS_ENABLED_STORAGE_KEY = "view-transitions-enabled";
 
 const listeners = new Set<() => void>();
@@ -30,7 +30,7 @@ export function getViewTransitionsEnabled(): boolean {
   }
 
   try {
-    return window.localStorage.getItem(VIEW_TRANSITIONS_ENABLED_STORAGE_KEY) !== "false";
+    return window.localStorage.getItem(VIEW_TRANSITIONS_ENABLED_STORAGE_KEY) === "true";
   } catch {
     return DEFAULT_VIEW_TRANSITIONS_ENABLED;
   }

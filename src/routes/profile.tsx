@@ -201,8 +201,11 @@ function ViewTransitionsRow() {
   const isEnabled = useViewTransitionsEnabled();
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="text-sm font-medium text-stone-900">Web animation transitions</div>
+    <div className="flex items-center justify-between gap-3">
+      <div>
+        <div className="text-sm font-medium text-stone-900">Web animation transitions</div>
+        <p className="text-xs text-stone-500">Experimental feature</p>
+      </div>
       <Switch
         aria-label="Web animation transitions"
         isSelected={isEnabled}
