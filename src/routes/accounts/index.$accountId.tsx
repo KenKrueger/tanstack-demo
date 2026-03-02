@@ -1,4 +1,4 @@
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -12,7 +12,6 @@ import { Button } from "../../components/ui/Button";
 import { Modal } from "../../components/ui/Modal";
 import { Dialog } from "../../components/ui/Dialog";
 import { TransferForm } from "../../components/forms/transfer-form";
-import { consumePendingAccountCardTransition } from "../../lib/account-card-transition";
 
 export const Route = createFileRoute("/accounts/index/$accountId")({
   loader: (opts) => {
@@ -30,23 +29,12 @@ function AccountDetailsPage() {
   const { accountId } = Route.useParams();
   const account = accounts.find((acct) => acct.id === accountId);
   const isCredit = account?.type === "CREDIT";
-  const shouldUseSharedAccountTransition = useMemo(
-    () => consumePendingAccountCardTransition(accountId),
-    [accountId]
-  );
 
   if (!account) return <div>Account not found</div>;
 
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
-      <div
-        className="max-w-4xl mx-auto px-4 pt-[calc(var(--effective-safe-area-top)+1.25rem)] pb-2 sm:px-6"
-        style={{
-          viewTransitionName: shouldUseSharedAccountTransition
-            ? "account-card"
-            : "none",
-        }}
-      >
+      <div className="max-w-4xl mx-auto px-4 pt-[calc(var(--effective-safe-area-top)+1.25rem)] pb-2 sm:px-6">
         <h1 className="text-[1.75rem] font-bold tracking-tight text-stone-900 font-display leading-tight pl-12">
           {account.displayName}
         </h1>

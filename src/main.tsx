@@ -24,7 +24,8 @@ type ViewTransitionLocationChange = {
   hashChanged: boolean;
 };
 
-const MOBILE_VIEWPORT_MEDIA_QUERY = "(max-width: 900px)";
+const MOBILE_POINTER_MEDIA_QUERY = "(hover: none) and (pointer: coarse)";
+const MOBILE_VIEWPORT_MEDIA_QUERY = "(max-width: 1024px)";
 
 function prefersReducedMotion() {
   return (
@@ -36,7 +37,8 @@ function prefersReducedMotion() {
 function isMobileViewport() {
   return (
     typeof window !== "undefined" &&
-    window.matchMedia(MOBILE_VIEWPORT_MEDIA_QUERY).matches
+    (window.matchMedia(MOBILE_POINTER_MEDIA_QUERY).matches ||
+      window.matchMedia(MOBILE_VIEWPORT_MEDIA_QUERY).matches)
   );
 }
 
@@ -68,8 +70,6 @@ function resolveViewTransitionTypes({
   fromLocation,
   toLocation,
   pathChanged,
-  hrefChanged,
-  hashChanged,
 }: ViewTransitionLocationChange): string[] | false {
   if (!isMobileViewport()) return false;
   if (prefersReducedMotion()) return false;
@@ -77,8 +77,7 @@ function resolveViewTransitionTypes({
   const doc = document as Document & { activeViewTransition?: unknown };
   if (doc.activeViewTransition) return false;
 
-  if (!pathChanged || !hrefChanged) return false;
-  if (hashChanged && fromLocation?.pathname === toLocation.pathname) return false;
+  if (!pathChanged) return false;
 
   const fromIndex = getHistoryIndex(fromLocation);
   const toIndex = getHistoryIndex(toLocation);
