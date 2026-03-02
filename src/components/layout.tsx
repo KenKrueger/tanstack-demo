@@ -121,7 +121,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
           className="vtTabbar fixed bottom-0 inset-x-0 z-10"
         >
           <div
-            aria-hidden
+            aria-hidden="true"
             className="absolute inset-x-0 bottom-0 -z-10 h-[calc(var(--bottom-nav-height)+var(--effective-safe-area-bottom))] bg-white"
           />
           <div className="border-t border-stone-200/60 bg-white/85 px-2 pb-[var(--effective-safe-area-bottom)] shadow-lg backdrop-blur-xl">
