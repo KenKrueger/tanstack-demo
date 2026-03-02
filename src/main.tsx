@@ -10,6 +10,7 @@ import { installSafeAreaBridge } from "./lib/safe-area-bridge";
 import { initializeSafeAreaOverrides } from "./lib/safe-area-overrides";
 import { consumeProgrammaticPopTransitionOverride } from "./lib/view-transition-overrides";
 import { getMainNavPathname } from "./lib/main-nav-themes";
+import { getViewTransitionsEnabled } from "./lib/view-transitions-enabled";
 
 type LocationWithHistoryIndex = {
   pathname: string;
@@ -75,6 +76,7 @@ function resolveViewTransitionTypes({
 }: ViewTransitionLocationChange): string[] | false {
   if (!isMobileViewport()) return false;
   if (prefersReducedMotion()) return false;
+  if (!getViewTransitionsEnabled()) return false;
 
   const doc = document as Document & { activeViewTransition?: unknown };
   if (doc.activeViewTransition) return false;
