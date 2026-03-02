@@ -120,6 +120,10 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
           aria-label="Primary"
           className="vtTabbar fixed bottom-0 inset-x-0 z-10"
         >
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 -z-10 h-[calc(var(--bottom-nav-height)+var(--effective-safe-area-bottom))] bg-white"
+          />
           <div className="border-t border-stone-200/60 bg-white/85 px-2 pb-[var(--effective-safe-area-bottom)] shadow-lg backdrop-blur-xl">
             <div className="mx-auto flex min-h-[var(--bottom-nav-height)] max-w-md items-center">
               <MyNavLink to="/" icon={HomeIcon} label="Home" replace={replaceTabHistory} />
