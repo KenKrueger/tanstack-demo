@@ -8,6 +8,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { CriticalErrorFallback } from "./critical-error-fallback";
 import { installSafeAreaBridge } from "./lib/safe-area-bridge";
 import { initializeSafeAreaOverrides } from "./lib/safe-area-overrides";
+import { consumeProgrammaticPopTransitionOverride } from "./lib/view-transition-overrides";
 
 type LocationWithHistoryIndex = {
   pathname: string;
@@ -76,8 +77,10 @@ function resolveViewTransitionTypes({
 
   const doc = document as Document & { activeViewTransition?: unknown };
   if (doc.activeViewTransition) return false;
+  if (document.getElementById("splashcontainer")) return false;
 
   if (!pathChanged) return false;
+  if (!fromLocation) return false;
 
   const fromIndex = getHistoryIndex(fromLocation);
   const toIndex = getHistoryIndex(toLocation);
@@ -86,7 +89,10 @@ function resolveViewTransitionTypes({
     if (toIndex > fromIndex) return ["push"];
     if (toIndex < fromIndex) {
       // Keep iOS swipe-back gesture as the only back animation.
-      if (isIOSSafari()) return false;
+      if (isIOSSafari()) {
+        if (consumeProgrammaticPopTransitionOverride()) return ["pop"];
+        return false;
+      }
       return ["pop"];
     }
   }

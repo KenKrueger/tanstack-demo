@@ -16,11 +16,7 @@ import { WrappedLink } from "./wrapped-link";
 import { useTabHistoryMode } from "../lib/tab-history-mode";
 import { haptic } from "../lib/haptic";
 import { getMainNavPathname } from "../lib/main-nav-themes";
-
-function useIsBottomNavPath() {
-  const location = useLocation();
-  return getMainNavPathname(location.pathname) !== null;
-}
+import { requestProgrammaticPopTransitionOverride } from "../lib/view-transition-overrides";
 
 interface MyNavLinkProps {
   to: string;
@@ -58,14 +54,23 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
 
 export function RootLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const location = useLocation();
   const canGoBack = useCanGoBack();
-  const isBottomNavPath = useIsBottomNavPath();
+  const isBottomNavPath = getMainNavPathname(location.pathname) !== null;
+  const isAccountDetailsPath = location.pathname.startsWith("/accounts/index/");
   const showBackButton = canGoBack && !isBottomNavPath;
   const tabHistoryMode = useTabHistoryMode();
   const replaceTabHistory = tabHistoryMode === "native";
   const mainPaddingBottom = isBottomNavPath
     ? "calc(var(--bottom-nav-height) + var(--effective-safe-area-bottom))"
     : undefined;
+
+  const handleBackPress = () => {
+    if (isAccountDetailsPath) {
+      requestProgrammaticPopTransitionOverride();
+    }
+    router.history.back();
+  };
 
   return (
     <div className="min-h-screen min-h-[100svh] bg-[#FAF7F2]">
@@ -75,7 +80,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
       />
       {showBackButton && (
         <Button
-          onPress={() => router.history.back()}
+          onPress={handleBackPress}
           onPressStart={() => haptic(40)}
           className="fixed left-4 top-[calc(var(--effective-safe-area-top)+1rem)] z-10 rounded-full bg-white/90 backdrop-blur p-3 shadow-lg text-stone-700 hover:text-stone-900 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
         >
