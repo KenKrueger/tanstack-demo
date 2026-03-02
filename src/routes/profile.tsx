@@ -16,6 +16,10 @@ import {
   useSafeAreaOverrides,
 } from "../lib/safe-area-overrides";
 import { Switch } from "../components/ui/Switch";
+import {
+  setViewTransitionsEnabled,
+  useViewTransitionsEnabled,
+} from "../lib/view-transitions-enabled";
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePageWrapper,
@@ -90,6 +94,7 @@ function ProfileContent() {
       <Card className="divide-y">
         <Section title="Navigation">
           <TabHistoryModeRow />
+          <ViewTransitionsRow />
         </Section>
       </Card>
 
@@ -188,6 +193,23 @@ function TabHistoryModeRow() {
           onSelect={setTabHistoryMode}
         />
       </div>
+    </div>
+  );
+}
+
+function ViewTransitionsRow() {
+  const isEnabled = useViewTransitionsEnabled();
+
+  return (
+    <div className="flex items-center justify-between">
+      <div className="text-sm font-medium text-stone-900">Web animation transitions</div>
+      <Switch
+        aria-label="Web animation transitions"
+        isSelected={isEnabled}
+        onChange={setViewTransitionsEnabled}
+      >
+        {""}
+      </Switch>
     </div>
   );
 }
