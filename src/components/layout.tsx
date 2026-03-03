@@ -16,7 +16,9 @@ import { useTabHistoryMode } from "../lib/tab-history-mode";
 import { haptic } from "../lib/haptic";
 import { getMainNavPathname } from "../lib/main-nav-themes";
 import { requestProgrammaticPopTransitionOverride } from "../lib/view-transition-overrides";
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
+
+const scrollMemory = new Map<string, number>();
 
 interface MyNavLinkProps {
   to: string;
@@ -35,7 +37,12 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
 
     const now = Date.now();
     if (now - lastHomeTapMs.current <= 350) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const mainScroller = document.querySelector<HTMLElement>(".vtMain");
+      if (mainScroller) {
+        mainScroller.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
       haptic(20);
       lastHomeTapMs.current = 0;
       return;
@@ -72,6 +79,8 @@ function MyNavLink({ to, icon: Icon, label, replace }: MyNavLinkProps) {
 export function RootLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const location = useLocation();
+  const mainRef = useRef<HTMLElement>(null);
+  const scrollKey = location.href;
   const locationHistoryIndex =
     typeof location.state === "object" &&
     location.state !== null &&
@@ -95,6 +104,17 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
     router.history.back();
   };
 
+  useLayoutEffect(() => {
+    const el = mainRef.current;
+    if (!el) return;
+
+    el.scrollTop = scrollMemory.get(scrollKey) ?? 0;
+
+    return () => {
+      scrollMemory.set(scrollKey, el.scrollTop);
+    };
+  }, [scrollKey]);
+
   return (
     <div className="min-h-screen min-h-[100svh] bg-[#FAF7F2]">
       <div
@@ -111,7 +131,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
           <span className="sr-only">Back</span>
         </Button>
       )}
-      <main className="vtMain" style={{ paddingBottom: mainPaddingBottom }}>
+      <main ref={mainRef} className="vtMain" style={{ paddingBottom: mainPaddingBottom }}>
         {children}
       </main>
 

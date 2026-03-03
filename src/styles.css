@@ -77,6 +77,22 @@ body {
   view-transition-name: main;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  html,
+  body,
+  #app {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .vtMain {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 .vtTabbar {
   view-transition-name: tabbar;
 }
