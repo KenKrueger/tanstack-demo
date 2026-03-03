@@ -19,6 +19,18 @@ import { requestProgrammaticPopTransitionOverride } from "../lib/view-transition
 import { useLayoutEffect, useRef } from "react";
 
 const scrollMemory = new Map<string, number>();
+const MAX_SCROLL_MEMORY_ENTRIES = 100;
+
+function rememberScrollPosition(key: string, scrollTop: number) {
+  scrollMemory.set(key, scrollTop);
+
+  if (scrollMemory.size > MAX_SCROLL_MEMORY_ENTRIES) {
+    const oldestKey = scrollMemory.keys().next().value;
+    if (oldestKey) {
+      scrollMemory.delete(oldestKey);
+    }
+  }
+}
 
 interface MyNavLinkProps {
   to: string;
@@ -111,7 +123,7 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
     el.scrollTop = scrollMemory.get(scrollKey) ?? 0;
 
     return () => {
-      scrollMemory.set(scrollKey, el.scrollTop);
+      rememberScrollPosition(scrollKey, el.scrollTop);
     };
   }, [scrollKey]);
 
