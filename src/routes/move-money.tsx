@@ -82,7 +82,10 @@ function TransfersPayments() {
         <Drawer.Portal>
           <Drawer.Backdrop className="fixed inset-0 bg-black/40" />
           <Drawer.Viewport className="fixed inset-x-0 bottom-0 flex justify-center">
-            <Drawer.Popup className="w-full max-w-2xl rounded-t-2xl bg-white p-6 shadow-xl">
+            <Drawer.Popup
+              className="w-full max-w-2xl rounded-t-2xl bg-white px-6 pt-6 shadow-xl"
+              style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
+            >
               <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-stone-300" />
               <Drawer.Title className="text-lg font-semibold text-stone-800">
                 Wire Transfer
