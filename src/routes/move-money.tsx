@@ -80,8 +80,8 @@ function TransfersPayments() {
 
       <Drawer.Root open={open} onOpenChange={setOpen}>
         <Drawer.Portal>
-          <Drawer.Backdrop className="fixed inset-0 bg-black/40" />
-          <Drawer.Viewport className="fixed inset-x-0 bottom-0 flex justify-center">
+          <Drawer.Backdrop className="fixed inset-0 z-20 bg-black/40" />
+          <Drawer.Viewport className="fixed inset-x-0 bottom-0 z-20 flex justify-center">
             <Drawer.Popup
               className="w-full max-w-2xl rounded-t-2xl bg-white px-6 pt-6 shadow-xl"
               style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
