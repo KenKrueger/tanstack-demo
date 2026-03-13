@@ -32,12 +32,14 @@ body,
   min-height: 100%;
 }
 
-html,
-body {
-  background-color: #FAF7F2;
+html {
+  /* White background so iOS Safari's bottom chrome (address bar area)
+     matches the bottom nav bar color instead of showing the page's beige. */
+  background-color: #ffffff;
 }
 
 body {
+  background-color: #FAF7F2;
   margin: 0;
 }
 
