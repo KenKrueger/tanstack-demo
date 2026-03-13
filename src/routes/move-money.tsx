@@ -1,5 +1,7 @@
 import { createFileRoute, Link, Outlet, useMatchRoute } from "@tanstack/react-router";
+import { Drawer } from "@base-ui/react/drawer";
 import { ChevronRight } from "lucide-react";
+import { useState } from "react";
 import { RouteHeroHeader } from "../components/route-hero-header";
 
 export const Route = createFileRoute("/move-money")({
@@ -35,6 +37,8 @@ function RouteComponent() {
 }
 
 function TransfersPayments() {
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <MenuSection title="Your Accounts">
@@ -59,11 +63,45 @@ function TransfersPayments() {
           title="Banana Link"
           subtitle="Send money to Members."
         />
-        <MenuItem
-          title="Wire Transfer"
-          subtitle="Send money almost anywhere."
-        />
+        <li className="flex flex-row justify-between items-center border-b border-stone-100 p-4 last:border-b-0">
+          <button
+            type="button"
+            aria-haspopup="dialog"
+            aria-expanded={open}
+            className="text-inherit flex-1 text-left cursor-pointer"
+            onClick={() => setOpen(true)}
+          >
+            <div className="font-semibold text-stone-800">Wire Transfer</div>
+            <div className="text-sm text-stone-500">Send money almost anywhere.</div>
+          </button>
+          <ChevronRight aria-hidden className="text-stone-400" />
+        </li>
       </MenuSection>
+
+      <Drawer.Root open={open} onOpenChange={setOpen}>
+        <Drawer.Portal>
+          <Drawer.Backdrop className="fixed inset-0 bg-black/40" />
+          <Drawer.Viewport className="fixed inset-x-0 bottom-0 flex justify-center">
+            <Drawer.Popup className="w-full max-w-2xl rounded-t-2xl bg-white p-6 shadow-xl">
+              <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-stone-300" />
+              <Drawer.Title className="text-lg font-semibold text-stone-800">
+                Wire Transfer
+              </Drawer.Title>
+              <Drawer.Description className="mt-2 text-sm text-stone-500">
+                Send money almost anywhere in the world. Wire transfers are
+                processed same business day when initiated before 4 PM ET.
+              </Drawer.Description>
+              <button
+                type="button"
+                className="mt-6 w-full rounded-xl bg-stone-800 py-3 text-sm font-semibold text-white"
+                onClick={() => setOpen(false)}
+              >
+                Close
+              </button>
+            </Drawer.Popup>
+          </Drawer.Viewport>
+        </Drawer.Portal>
+      </Drawer.Root>
     </>
   );
 }
